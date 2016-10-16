@@ -2,8 +2,8 @@
 Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
-Tested up to: 4.5.2
-Stable tag: 1.0.1
+Tested up to: 4.6.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,8 +113,12 @@ Coming soon
 
 == Changelog ==
 
+= 1.0.2 =
+* FIX: issues with tax calculation
+* UPDATE: Compatibility update with Sliced Invoices Deposit Invoices Extension v2.0.0
+
 = 1.0.1 =
-FIX: Error on edit invoice when not related to a Woocommerce order
+* FIX: Error on edit invoice when not related to a Woocommerce order
 
 = 1.0 =
 * Initial release at WordPress.org
