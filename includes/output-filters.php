@@ -11,7 +11,7 @@ if ( ! defined('ABSPATH') ) { exit;
     // some global type filters
     add_filter( 'sliced_totals_global_tax', 'sliced_set_woocommerce_tax_rate', 999, 2 );
     add_filter( 'sliced_invoice_totals', 'sliced_get_woocommerce_totals', 999, 2 );
-    add_filter( 'sliced_get_formatted_currency', 'sliced_get_woocommerce_formatted_total', 999 );
+    //add_filter( 'sliced_get_formatted_currency', 'sliced_get_woocommerce_formatted_total', 999 );
 
     // for payment gateways
     add_filter( 'sliced_get_invoice_sub_total_raw', 'sliced_get_woocommerce_invoice_sub_total_raw', 999, 2 );
@@ -29,6 +29,9 @@ if ( ! defined('ABSPATH') ) { exit;
 
     // hide the adjust filed. Not used in woocommerce
     add_filter( 'sliced_hide_adjust_field', 'sliced_woocommerce_hide_adjust_field', 999 );
+	
+	// kill global tax. Let woocommerce handle.
+	add_filter( 'sliced_totals_global_tax', 'sliced_woo_invoices_return_zero', 1 );
 
 
     function sliced_woocommerce_custom_button_text() {
@@ -263,7 +266,7 @@ if ( ! defined('ABSPATH') ) { exit;
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
             return $formatted;
         $order = new WC_Order($order_id);
-        
+		
         $formatted = $order->get_formatted_order_total();
         return $formatted;
     }
@@ -305,23 +308,32 @@ if ( ! defined('ABSPATH') ) { exit;
 
         $order = sliced_woocommerce_get_order();
 
-        if( ! isset( $order ) || $order == false || empty( $order ) )
-                return $data;
+        if( ! isset( $order ) || $order == false || empty( $order ) ) {
+            return $data;
+		}
 
-            $amount = sliced_woocommerce_order_amounts();
-            $total  = $amount['total_raw'];
+		$amount = sliced_woocommerce_order_amounts();
+		$total  = $amount['total_raw'];
 
-            if( wc_tax_enabled() ) {
-                $tax    = $order->get_total_tax();
-                // work out the tax rate of the total order
-                $tax_rate = $tax != 0 ? ($tax / $total) * 100 : 0;
-                $data['tax'] = $tax;
-            }  
+		if( wc_tax_enabled() ) {
+			$tax    = $order->get_total_tax();
+			// work out the tax rate of the total order
+			$tax_rate = $tax != 0 ? ($tax / $total) * 100 : 0;
+			$data['tax'] = $tax;
+		}
 
-            $data['total'] = $total;
-
+		$data['total'] = $total;
+		
+		if ( isset( $data['deposit'] ) && is_array( $data['deposit'] ) ) {
+			$data['total'] = $data['deposit']['total'];
+		}
+		
         return $data;
     }
+	
+	function sliced_woo_invoices_return_zero() {
+		return 0;
+	}
 
 
     /**
