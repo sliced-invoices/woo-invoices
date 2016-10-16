@@ -1,0 +1,447 @@
+<?php
+// Exit if accessed directly
+if ( ! defined('ABSPATH') ) { exit;
+}
+    
+    // change button text
+    add_filter( 'woocommerce_product_add_to_cart_text', 'sliced_woocommerce_custom_button_text' ); 
+    add_filter( 'woocommerce_product_single_add_to_cart_text', 'sliced_woocommerce_custom_button_text' );
+
+
+    // some global type filters
+    add_filter( 'sliced_totals_global_tax', 'sliced_set_woocommerce_tax_rate', 999, 2 );
+    add_filter( 'sliced_invoice_totals', 'sliced_get_woocommerce_totals', 999, 2 );
+    add_filter( 'sliced_get_formatted_currency', 'sliced_get_woocommerce_formatted_total', 999 );
+
+    // for payment gateways
+    add_filter( 'sliced_get_invoice_sub_total_raw', 'sliced_get_woocommerce_invoice_sub_total_raw', 999, 2 );
+    add_filter( 'sliced_get_invoice_total_raw', 'sliced_get_woocommerce_invoice_total_raw', 999, 2 );
+    add_filter( 'sliced_get_invoice_tax_raw', 'sliced_get_woocommerce_invoice_tax_raw', 999, 2 );
+    add_filter( 'sliced_get_currency_symbol', 'sliced_get_woocommerce_currency_symbol', 999, 2 );
+
+    // modify output in the admin area
+    add_filter( 'sliced_display_the_line_totals', 'sliced_woocommerce_display_the_line_totals_admin', 999, 2 );
+    
+    // modify the HTML output on the front end
+    add_action( 'sliced_invoice_before_totals_table', 'sliced_display_woocommerce_totals' );
+    add_filter( 'sliced_invoice_line_items_output', 'sliced_display_woocommerce_line_items', 1, 1 );
+    add_filter( 'sliced_to_address_output', 'sliced_display_woocommerce_to_address', 1, 1 );
+
+    // hide the adjust filed. Not used in woocommerce
+    add_filter( 'sliced_hide_adjust_field', 'sliced_woocommerce_hide_adjust_field', 999 );
+
+
+    function sliced_woocommerce_custom_button_text() {
+        
+        global $product;
+    
+        $product_type = $product->product_type;
+
+        $wc_si  = get_option( 'woocommerce_sliced-invoices_settings' );
+        $text   = $wc_si['custom_button_text'];
+        $types  = $wc_si['button_product_types'] != "" ? $wc_si['button_product_types'] : array();
+            
+        switch ( $product_type ) {
+            case 'external':
+                if( in_array( $product_type, $types) ) {
+                    return $text;
+                }
+                return __( 'Buy product', 'woocommerce' );
+            break;
+            case 'grouped':
+                if( in_array( $product_type, $types) ) {
+                    return $text;
+                }
+                return __( 'View products', 'woocommerce' );
+            break;
+            case 'simple':
+                if( in_array( $product_type, $types) ) {
+                    return $text;
+                }
+                return __( 'Add to cart', 'woocommerce' );
+            break;
+            case 'variable':
+                if( in_array( $product_type, $types) ) {
+                    return $text;
+                }
+                return __( 'Select options', 'woocommerce' );
+            break;
+            default:
+                return __( 'Read more', 'woocommerce' );
+        }    
+
+
+    }
+
+
+    /**
+     * Gets the invoice id relating to the Woocommerce order
+     * @since   1.0
+     */
+    function sliced_woocommerce_get_invoice_id( $order_id ) {
+        
+        $args = array(
+            'post_type' => array( 'sliced_invoice', 'sliced_quote' ),
+            'post_status' => 'publish',
+            'posts_per_page' => 1,
+            'fields' => 'ids',
+            'meta_query' => array(
+                'relation' => 'OR',
+                array(
+                    'key'     => '_sliced_invoice_woocommerce_order',
+                    'value'   => $order_id,
+                    'compare' => '=',
+                ),
+                array(
+                    'key'     => '_sliced_quote_woocommerce_order',
+                    'value'   => $order_id,
+                    'compare' => '=',
+                ),
+            ),
+        );
+        $the_query = new WP_Query( $args );
+        if( $the_query->posts ) {
+            $id = $the_query->posts[0];
+            return $id;
+        };
+
+        return false;
+
+    }    
+
+    /**
+     * Gets the order id relating to the sliced invoices invoice
+     * @since   1.0
+     */
+    function sliced_woocommerce_get_order_id( $invoice_id = null ) {
+        if ( ! $invoice_id ) {
+            $invoice_id = sliced_get_the_id( $invoice_id );
+        }
+        $type = sliced_get_the_type($invoice_id);
+        $order_id = get_post_meta( $invoice_id, '_sliced_' . $type . '_woocommerce_order', true );
+        return $order_id;
+    }
+
+    /**
+     * Gets the order relating to the sliced invoices invoice
+     * @since   1.0
+     */
+    function sliced_woocommerce_get_order( $id = null ) {
+        $order_id = sliced_woocommerce_get_order_id( $id );
+        $order = wc_get_order( $order_id );
+        return $order;
+    }
+
+
+    /**
+     * Display the totals in the admin area
+     * @since  1.0
+     */ 
+    function sliced_woocommerce_display_the_line_totals_admin( $output ) {
+
+        $order = sliced_woocommerce_get_order();
+
+        if( ! isset( $order ) || $order == false || empty( $order ) )
+            return $output;
+
+        $amount   = sliced_woocommerce_order_amounts();
+
+        $output = '<div class="alignright sliced_totals">';
+        $output .= '<h3>' . sprintf( __( '%s Totals', 'sliced-invoices' ), esc_html( sliced_get_label() ) ) .'</h3>';  
+            // loop through each item
+            foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+                $output .= '<div>' .  wp_kses_post( $total['label'] ) . '';
+                $output .= '<span class="alignright">' . wp_kses_post( $total['value'] ) . '</span>';
+                $output .= '</div>';
+
+            }
+        $output .= '</div>';
+
+        return $output;
+
+    }  
+
+    /**
+     * Display the totals in the admin area
+     * @since  1.0
+     */ 
+    function sliced_woocommerce_order_amounts( $id = null ) {
+
+        $order_id = sliced_woocommerce_get_order_id( $id );
+        $order = sliced_woocommerce_get_order( $id );
+
+        if( ! $order) 
+            return;
+
+        $cart_tax       = $order->get_cart_tax( $order_id );
+        $shipping_tax   = $order->get_shipping_tax( $order_id );
+        $total_tax      = $order->get_total_tax( $order_id );
+        $shipping       = $order->get_shipping_to_display( $order_id );
+        $discount       = $order->get_discount_to_display( $order_id );
+        $sub_total      = $order->get_subtotal_to_display( $order_id );
+        $total          = $order->get_formatted_order_total( $order_id );
+        $total_raw      = $order->get_total( $order_id );
+        $subtotal_raw   = $order->get_subtotal( $order_id );
+        $shipping_raw   = $order->get_total_shipping( $order_id );
+
+        return array(
+            'cart_tax'      => $cart_tax,
+            'shipping_tax'  => $shipping_tax,
+            'total_tax'     => $total_tax,
+            'shipping'      => $shipping,
+            'discount'      => $discount,
+            'sub_total'     => $sub_total,
+            'total'         => $total,
+            'total_raw'     => $total_raw,
+            'subtotal_raw'  => $subtotal_raw,
+            'shipping_raw'  => $shipping_raw,
+        );
+
+    }
+
+
+    /**
+     * Get the raw total for payment gateways
+     * @since  1.0
+     */ 
+    function sliced_get_woocommerce_invoice_sub_total_raw( $total, $id ) {
+        $order_id = sliced_woocommerce_get_order_id();
+        if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
+            return $total;
+        $totals     = sliced_woocommerce_order_amounts( $id );
+        $sub_total  = round( $totals['subtotal_raw'], sliced_get_decimals());
+        $shipping   = round( $totals['shipping_raw'], sliced_get_decimals());
+        $total      = $sub_total + $shipping;
+        return $total;
+    }
+
+    /**
+     * Get the raw total for payment gateways
+     * @since  1.0
+     */ 
+    function sliced_get_woocommerce_invoice_total_raw( $total, $id ) {
+        $order_id = sliced_woocommerce_get_order_id();
+        if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
+            return $total;
+        $totals = sliced_woocommerce_order_amounts( $id );
+        $total  = round( $totals['total_raw'], sliced_get_decimals());
+        return $total;
+    }
+
+    /**
+     * Get the raw total for payment gateways
+     * @since  1.0
+     */ 
+    function sliced_get_woocommerce_invoice_tax_raw( $total, $id ) {
+        $order_id = sliced_woocommerce_get_order_id();
+        if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
+            return $total;
+        $totals = sliced_woocommerce_order_amounts( $id );
+        $total = round( $totals['total_tax'], sliced_get_decimals());
+        return $total;
+    }
+
+    /**
+     * Get the currency symbol for payment gateways
+     * @since  1.0
+     */ 
+    function sliced_get_woocommerce_currency_symbol( $symbol ) {
+        $order_id = sliced_woocommerce_get_order_id();
+        if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
+            return $symbol;
+        $symbol = get_woocommerce_currency_symbol();
+        return $symbol;
+    }
+
+    /**
+     * Get the formatted total
+     * @since  1.0
+     */ 
+    function sliced_get_woocommerce_formatted_total( $formatted ) {
+        $order_id = sliced_woocommerce_get_order_id();
+        if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
+            return $formatted;
+        $order = new WC_Order($order_id);
+        
+        $formatted = $order->get_formatted_order_total();
+        return $formatted;
+    }
+
+    /**
+     * Do prices include tax
+     * @since  1.0
+     */ 
+    function sliced_woocommerce_prices_include_tax() {
+        $includes = get_option( 'woocommerce_prices_include_tax' );
+        if($includes == 'yes') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Set the tax rate to 0 if tax is not enabled in Woocommerce,
+     * and only on Woocommerce invoices/orders.
+     * @since  1.0
+     */ 
+    function sliced_set_woocommerce_tax_rate( $rate, $id ) {
+        $order_id = sliced_woocommerce_get_order_id( $id );
+        if( $order_id != "" && ! wc_tax_enabled() ) {
+            return 0;
+        }
+        return $rate;
+    }
+
+
+    /**
+     * Work out the totals and tax rates from woocommerce and filter this on each order.
+     * Used in the admin area and the front end
+     * @since  1.0
+     */ 
+    function sliced_get_woocommerce_totals( $data, $id ) {
+
+        $order = sliced_woocommerce_get_order();
+
+        if( ! isset( $order ) || $order == false || empty( $order ) )
+                return $data;
+
+            $amount = sliced_woocommerce_order_amounts();
+            $total  = $amount['total_raw'];
+
+            if( wc_tax_enabled() ) {
+                $tax    = $order->get_total_tax();
+                // work out the tax rate of the total order
+                $tax_rate = $tax != 0 ? ($tax / $total) * 100 : 0;
+                $data['tax'] = $tax;
+            }  
+
+            $data['total'] = $total;
+
+        return $data;
+    }
+
+
+    /**
+     * Display the totals on the invoice, direct form the Woocommerce order.
+     * @since  1.0
+     */ 
+    function sliced_display_woocommerce_totals( $output ) {
+        
+        $order = sliced_woocommerce_get_order();
+
+        if( ! isset( $order ) || $order == false || empty( $order ) )
+            return $output;
+
+        $output = null;
+        $output ='<table class="table table-sm table-bordered woo">';
+            $output .= '<tbody>';
+
+            foreach ( $order->get_order_item_totals() as $key => $total ) {
+
+                $output .= '<tr class="' . sanitize_title( $total['label'] ) . '">';
+                    $output .= '<th scope="row">' .  wp_kses_post( $total['label'] ) . '</th>';
+                    $output .= '<td>' . wp_kses_post( $total['value'] ) . '</td>';
+                $output .= '</tr>';
+
+            }
+
+            $output .= '</tbody>';
+
+        $output .= '</table>';
+
+        echo $output;
+
+    }
+
+    /**
+     * Display the totals on the invoice, direct form the Woocommerce order.
+     * @since  1.0
+     */ 
+    function sliced_display_woocommerce_line_items( $output ) {
+        
+        $order = sliced_woocommerce_get_order();
+
+        if( ! isset( $order ) || $order == false || empty( $order ) )
+            return $output;
+
+        $output = null;
+        $output = '<table class="table table-sm table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="qty"><strong>' . __( "Hrs/Qty", "sliced-invoices" ) . '</strong></th>
+                    <th class="service"><strong>' . __( "Service", "sliced-invoices" ) . '</strong></th>
+                    <th class="rate"><strong>' . __( "Rate/Price", "sliced-invoices" ) . '</strong></th>';
+                    $output .= '<th class="total"><strong>' . __( "Sub Total", "sliced-invoices" ) . '</strong></th>
+                </tr>
+            </thead>
+            <tbody>';
+
+            foreach( $order->get_items() as $item_id => $item ) {
+
+                $class = ($count % 2 == 0) ? "even" : "odd";
+
+                $product = apply_filters( 'woocommerce_order_item_product', $order->get_product_from_item( $item ), $item );
+                $purchase_note = get_post_meta( $product->id, '_purchase_note', true );
+
+                $is_visible = $product && $product->is_visible();
+
+                $output .= '<tr class="row_' . esc_attr( $class ) . ' sliced-item">';
+                            
+                    $output .= '<td class="qty">' . apply_filters( 'woocommerce_order_item_quantity_html', ' <strong class="product-quantity">' . sprintf( '%s', wp_kses_post( $item['qty'] ) ) . '</strong>', $item ) . '</td>';
+                    
+                    $output .= '<td class="service">' . apply_filters( 'woocommerce_order_item_name', $is_visible ? sprintf( '<a href="%s">%s</a>', get_permalink( $item['product_id'] ), $item['name'] ) : $item['name'], $item, $is_visible ) . '</td>';
+                    
+                    $output .= '<td class="rate">' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) ) . '</td>';
+
+                    $output .= '<td class="total">' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) ) . '</td>';
+
+                $output .= '</tr>';
+
+            $count++; 
+            } 
+
+        $output .= '</tbody></table>';
+
+        return $output;
+    }
+
+    /**
+     * Display the 'to' address using Woocommerce customer.
+     * @since  1.0
+     */ 
+    function sliced_display_woocommerce_to_address( $output ) {
+        
+        $order = sliced_woocommerce_get_order();
+
+        if( ! isset( $order ) || $order == false || empty( $order ) )
+            return $output;
+
+        $output = null;
+
+        $output .= '<div class="col-xs-12 col-sm-4">';
+        $output .= '<div class="to"><strong>' . __( 'Billing Address', 'woocommerce' ) . '</strong></div>';
+        $output .= ( $address = $order->get_formatted_billing_address() ) ? '<div class="address">' . $address . '</div>' : __( 'N/A', 'woocommerce' );
+        $output .= '</div>';
+
+        if ( ! wc_ship_to_billing_address_only() && $order->needs_shipping_address() ) :
+            $output .= '<div class="col-xs-12 col-sm-4">';
+            $output .= '<div class="to"><strong>' . __( 'Shipping Address', 'woocommerce' ) . '</strong></div>';
+            $output .= ( $address = $order->get_formatted_shipping_address() ) ? '<div class="address">' . $address . '</div>' : __( 'N/A', 'woocommerce' );
+            $output .= '</div>';
+        endif; 
+
+        return $output;
+    }
+    
+    /**
+     * Hide adjust field
+     *
+     * @since   2.0.0
+     */
+    function sliced_woocommerce_hide_adjust_field() {
+        if ( sliced_woocommerce_get_order_id( null ) )
+            return true;
+    }
