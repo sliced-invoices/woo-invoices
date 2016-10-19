@@ -15,7 +15,7 @@ if ( ! defined('ABSPATH') ) { exit;
 
     // for payment gateways
     add_filter( 'sliced_get_invoice_sub_total_raw', 'sliced_get_woocommerce_invoice_sub_total_raw', 999, 2 );
-    add_filter( 'sliced_get_invoice_total_raw', 'sliced_get_woocommerce_invoice_total_raw', 999, 2 );
+    //add_filter( 'sliced_get_invoice_total_raw', 'sliced_get_woocommerce_invoice_total_raw', 999, 2 );
     add_filter( 'sliced_get_invoice_tax_raw', 'sliced_get_woocommerce_invoice_tax_raw', 999, 2 );
     add_filter( 'sliced_get_currency_symbol', 'sliced_get_woocommerce_currency_symbol', 999, 2 );
 
