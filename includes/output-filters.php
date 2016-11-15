@@ -331,8 +331,17 @@ if ( ! defined('ABSPATH') ) { exit;
         return $data;
     }
 	
-	function sliced_woo_invoices_return_zero() {
-		return 0;
+	/**
+	 * Zero out Sliced Invoices tax setting in favor of WooCommerce tax setting, but only if this invoice is
+	 * associated with a WooCommerce Order
+	 * @since 1.0.2
+	 */
+	function sliced_woo_invoices_return_zero( $tax ) {
+		global $post;
+		if ( $post->post_type === 'sliced_invoice' && sliced_woocommerce_get_order_id( $post->ID ) > '' ) {
+			return 0;
+		}
+		return $tax;
 	}
 
 
