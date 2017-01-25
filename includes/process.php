@@ -52,7 +52,7 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
 
         update_post_meta( $id, "_sliced_quote_prefix", sliced_get_quote_prefix() );
         update_post_meta( $id, "_sliced_quote_number", sliced_get_next_quote_number() );
-        Sliced_Quote::update_quote_number();
+        Sliced_Quote::update_quote_number( $id );
     
     } else {
 
@@ -61,7 +61,7 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
         update_post_meta( $id, "_sliced_invoice_prefix", sliced_get_invoice_prefix() );
         update_post_meta( $id, "_sliced_invoice_number", sliced_get_next_invoice_number() );
         update_post_meta( $id, "_sliced_order_number", $order->id );
-        Sliced_Invoice::update_invoice_number();
+        Sliced_Invoice::update_invoice_number( $id );
         
         /*
          * Check the payment methods and add them to the invoice
@@ -147,7 +147,7 @@ function sliced_woocommerce_update_from_admin_order( $order_id, $items ) {
             update_post_meta( $id, "_sliced_quote_prefix", sliced_get_quote_prefix() );
             update_post_meta( $id, "_sliced_quote_created", $created );
             update_post_meta( $id, "_sliced_quote_woocommerce_order", $order_id );
-            Sliced_Quote::update_quote_number();
+            Sliced_Quote::update_quote_number( $id );
 
         } else if( $type == 'invoice' ) {
 
@@ -161,7 +161,7 @@ function sliced_woocommerce_update_from_admin_order( $order_id, $items ) {
             update_post_meta( $id, '_sliced_payment_methods', $payment );
             update_post_meta( $id, "_sliced_invoice_created", $created );
             update_post_meta( $id, "_sliced_invoice_woocommerce_order", $order_id );
-            Sliced_Invoice::update_invoice_number();
+            Sliced_Invoice::update_invoice_number( $id );
 
         }
             
