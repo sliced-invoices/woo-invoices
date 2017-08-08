@@ -2,8 +2,8 @@
 Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
-Tested up to: 4.7
-Stable tag: 1.0.5
+Tested up to: 4.8
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,13 +105,17 @@ You want to create Quotes from your Woocommerce orders and send to clients for a
 
 = Where can I get help? =
 
-We are currently working on documentation but in the meantime, you can use the support forums here or email us directly at support(at)slicedinvoices.com
+We are currently working on documentation but in the meantime, you can use the support forums here or contact us directly at slicedinvoices.com
 
 == Screenshots ==
 
 Coming soon
 
 == Changelog ==
+
+= 1.0.6 =
+* FIX: compatibility issues with WooCommerce versions 3.0.0 and newer
+* UPDATE: add new .pot file for future translations
 
 = 1.0.5 =
 * UPDATE: compatibility with Sliced Invoices v3.3.0
