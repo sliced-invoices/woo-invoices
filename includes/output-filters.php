@@ -405,7 +405,7 @@ if ( ! defined('ABSPATH') ) { exit;
                 $class = ($count % 2 == 0) ? "even" : "odd";
 
                 $product = apply_filters( 'woocommerce_order_item_product', $order->get_product_from_item( $item ), $item );
-                $purchase_note = get_post_meta( $product->id, '_purchase_note', true );
+                $purchase_note = get_post_meta( $product->get_id(), '_purchase_note', true );
 
                 $is_visible = $product && $product->is_visible();
 

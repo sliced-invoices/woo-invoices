@@ -35,7 +35,7 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
      */
     $post_array = array(
         'post_content'   => '',
-        'post_title'     => 'Order ID ' . $order->id,
+        'post_title'     => 'Order ID ' . sliced_woocommerce_get_object_property( $order, 'order', 'id' ),
         'post_status'    => 'publish',
         'post_type'      => "sliced_${type}",
     );
@@ -60,7 +60,7 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
 
         update_post_meta( $id, "_sliced_invoice_prefix", sliced_get_invoice_prefix() );
         update_post_meta( $id, "_sliced_invoice_number", sliced_get_next_invoice_number() );
-        update_post_meta( $id, "_sliced_order_number", $order->id );
+        update_post_meta( $id, "_sliced_order_number", sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
         Sliced_Invoice::update_invoice_number( $id );
         
         /*
@@ -72,7 +72,7 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
         }
 
     }
-    update_post_meta( $id, "_sliced_${type}_woocommerce_order", $order->id );
+    update_post_meta( $id, "_sliced_${type}_woocommerce_order", sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
     update_post_meta( $id, "_sliced_${type}_created", time() );
     
     /*
@@ -318,7 +318,7 @@ function sliced_attach_pdf_to_woocomerce_email( $attachments, $status, $order ) 
     $allowed_statuses = array( 'new_order', 'customer_invoice', 'customer_processing_order', 'customer_completed_order', 'customer_quote' );
 
     if( isset( $status ) && in_array ( $status, $allowed_statuses ) ) {
-        $id = sliced_woocommerce_get_invoice_id( $order->id );
+        $id = sliced_woocommerce_get_invoice_id( sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
         $emails = new Sliced_Emails;
         $attachment = null;
         $pdf = $emails->maybe_attach_pdf( $attachment, $id );

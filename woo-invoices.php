@@ -11,7 +11,7 @@
  * Text Domain:       woo-invoices
  * Domain Path:       /languages
  * WC requires at least: 2.5
- * WC tested up to: 2.5
+ * WC tested up to: 3.1.1
  */
 
 
@@ -352,7 +352,11 @@ function woocommerce_sliced_invoices_init() {
             $order->update_status( 'wc-' . $this->quote_or_invoice, '' );
 
             // Reduce stock levels
-            $order->reduce_order_stock();
+			if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
+				wc_reduce_stock_levels( $order );
+			} else {
+				$order->reduce_order_stock();
+			}
 
             if( $this->auto_invoice_email ) {
                 // send the invoice
@@ -396,11 +400,16 @@ function woocommerce_sliced_invoices_init() {
          * @param bool $plain_text
          */
         public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
-            if ( $this->instructions && ! $sent_to_admin && 'sliced-invoices' === $order->payment_method ) {
+			
+			if (
+				$this->instructions &&
+				! $sent_to_admin &&
+				'sliced-invoices' === sliced_woocommerce_get_object_property( $order, 'order', 'payment_method' )
+			) {
 
                 echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
 
-                $sliced_id  = (int) sliced_woocommerce_get_invoice_id( $order->id );
+                $sliced_id  = (int) sliced_woocommerce_get_invoice_id( sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
                 $btn_text   = sprintf( __( 'View this %s online', 'sliced-invoices' ), sliced_get_the_type( $sliced_id ) );
                 $color      = get_option( 'woocommerce_email_base_color' );
                 $base_text  = wc_light_or_dark( $color, '#202020', '#ffffff' );

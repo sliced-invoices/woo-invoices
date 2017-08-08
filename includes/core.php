@@ -100,7 +100,7 @@ if ( ! defined('ABSPATH') ) { exit;
      * Make quote and invoice line items still editable
      * @since  1.0
      */ 
-    function sliced_woocommerce_make_our_statuses_editable() {
+    function sliced_woocommerce_make_our_statuses_editable( $in_array ) {
 
         if( isset( $_GET['post'] ) || isset( $_POST['order_id'] ) ) {
 
@@ -118,6 +118,8 @@ if ( ! defined('ABSPATH') ) { exit;
             }
 
         }
+		
+		return $in_array;
 
     }
 
@@ -127,7 +129,7 @@ if ( ! defined('ABSPATH') ) { exit;
      * @since   1.0
      */
     function sliced_woocommerce_front_view_invoice_button( $order ) {
-        $id = sliced_woocommerce_get_invoice_id( $order->id ); 
+        $id = sliced_woocommerce_get_invoice_id( $order->get_id() ); 
 
         if( $id ) {
         ?>
@@ -150,7 +152,7 @@ if ( ! defined('ABSPATH') ) { exit;
             return;
         }
 
-        $id = sliced_woocommerce_get_invoice_id( $order->id );
+        $id = sliced_woocommerce_get_invoice_id( $order->get_id() );
         if( $id ) {
 
         ?>
@@ -180,7 +182,7 @@ if ( ! defined('ABSPATH') ) { exit;
             // add the meta box
             add_meta_box( 
                 'sliced_invoices', 
-                __( 'Sliced Invoices', 'woo-invoices' ), 'sliced_wcoocommerce_render_meta_box_content', 
+                __( 'Sliced Invoices', 'woo-invoices' ), 'sliced_woocommerce_render_meta_box_content', 
                 'shop_order', 
                 'side', 
                 'high'
@@ -197,7 +199,7 @@ if ( ! defined('ABSPATH') ) { exit;
      *
      * @since 1.0.0
      */
-    function sliced_wcoocommerce_render_meta_box_content() {
+    function sliced_woocommerce_render_meta_box_content() {
         
         $id = (int) $_GET['post'];
         $sliced_id = (int) sliced_woocommerce_get_invoice_id( $id );
@@ -211,3 +213,50 @@ if ( ! defined('ABSPATH') ) { exit;
         <?php
 
     }
+	
+	
+	/**
+	 * Get object properties according to the version of WooCommerce being used.
+	 * Maintains backwards compatibility with older WooCommerce versions.
+	 * 
+	 * @since 1.0.6
+	 */
+	function sliced_woocommerce_get_object_property( $object, $object_type, $property ) {
+	
+		$WC = WooCommerce::instance();
+			
+		switch ( $object_type ) {
+		
+			case 'order':
+				
+				switch ( $property ) {
+					
+					case 'id':
+						if ( version_compare( $WC->version, '3.0.0', '>=' ) ) {
+							return $object->get_id();
+						} else {
+							return $object->id;
+						}
+						break;
+						
+					case 'payment_method':
+						if ( version_compare( $WC->version, '3.0.0', '>=' ) ) {
+							return $object->get_payment_method();
+						} else {
+							return $object->payment_method;
+						}
+						break;
+					
+				}
+				
+				break;
+				
+			case 'product':
+				
+				switch ( $property ) {
+				}
+				
+				break;
+		}
+		
+	}
