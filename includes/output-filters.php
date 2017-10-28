@@ -462,7 +462,9 @@ if ( ! defined('ABSPATH') ) { exit;
      *
      * @since   2.0.0
      */
-    function sliced_woocommerce_hide_adjust_field() {
-        if ( sliced_woocommerce_get_order_id( null ) )
+    function sliced_woocommerce_hide_adjust_field( $value ) {
+        if ( sliced_woocommerce_get_order_id( null ) ) {
             return true;
+		}
+		return $value;
     }
