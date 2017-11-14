@@ -324,8 +324,12 @@ if ( ! defined('ABSPATH') ) { exit;
 
 		$data['total'] = $total;
 		
-		if ( isset( $data['deposit'] ) && is_array( $data['deposit'] ) ) {
-			$data['total'] = $data['deposit']['total'];
+		// Fix for old get_totals(), i.e. Sliced Invoices < 3.6.0
+		// will be removed at some point in the future
+		if ( defined( 'SLICED_VERSION' ) && version_compare( SLICED_VERSION, '3.6.0', '<' ) ) {
+			if ( isset( $data['deposit'] ) && is_array( $data['deposit'] ) ) {
+				$data['total'] = $data['deposit']['total'];
+			}
 		}
 		
         return $data;
