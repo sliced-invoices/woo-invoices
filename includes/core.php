@@ -148,7 +148,7 @@ if ( ! defined('ABSPATH') ) { exit;
     function sliced_woocommerce_admin_view_invoice_button( $order ) {
         
         // do not show buttons for trashed orders
-        if ( $order->status == 'trash' ) {
+        if ( $order->get_status() == 'trash' ) {
             return;
         }
 
