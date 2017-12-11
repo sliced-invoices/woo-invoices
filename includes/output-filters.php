@@ -419,7 +419,7 @@ if ( ! defined('ABSPATH') ) { exit;
                     
                     $output .= '<td class="service">' . apply_filters( 'woocommerce_order_item_name', $is_visible ? sprintf( '<a href="%s">%s</a>', get_permalink( $item['product_id'] ), $item['name'] ) : $item['name'], $item, $is_visible ) . '</td>';
                     
-                    $output .= '<td class="rate">' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) ) . '</td>';
+                    $output .= '<td class="rate">' . wp_kses_post( wc_price( $order->get_item_subtotal( $item ) ) ) . '</td>';
 
                     $output .= '<td class="total">' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) ) . '</td>';
 
@@ -447,13 +447,13 @@ if ( ! defined('ABSPATH') ) { exit;
         $output = null;
 
         $output .= '<div class="col-xs-12 col-sm-4">';
-        $output .= '<div class="to"><strong>' . __( 'Billing Address', 'woocommerce' ) . '</strong></div>';
+        $output .= '<div class="to"><strong>' . __( 'Billing address', 'woocommerce' ) . '</strong></div>';
         $output .= ( $address = $order->get_formatted_billing_address() ) ? '<div class="address">' . $address . '</div>' : __( 'N/A', 'woocommerce' );
         $output .= '</div>';
 
         if ( ! wc_ship_to_billing_address_only() && $order->needs_shipping_address() ) :
             $output .= '<div class="col-xs-12 col-sm-4">';
-            $output .= '<div class="to"><strong>' . __( 'Shipping Address', 'woocommerce' ) . '</strong></div>';
+            $output .= '<div class="to"><strong>' . __( 'Shipping address', 'woocommerce' ) . '</strong></div>';
             $output .= ( $address = $order->get_formatted_shipping_address() ) ? '<div class="address">' . $address . '</div>' : __( 'N/A', 'woocommerce' );
             $output .= '</div>';
         endif; 
