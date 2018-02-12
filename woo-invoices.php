@@ -365,6 +365,17 @@ function woocommerce_sliced_invoices_init() {
 
             // Remove cart
             WC()->cart->empty_cart();
+			
+			// trigger new order email
+			$mailer = WC()->mailer();
+			$mails = $mailer->get_emails();
+			if ( ! empty( $mails ) ) {
+				foreach ( $mails as $mail ) {
+					if ( $mail->id == 'new_order' ) {
+						$mail->trigger( $order->id, $order );
+					}
+				}
+			}
 
             // Return thankyou redirect
             return array(
