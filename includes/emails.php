@@ -14,7 +14,7 @@ if ( ! defined('ABSPATH') ) { exit;
      * @since   1.0
      */
     function sliced_add_transactional_emails( $emails ) {
-        // $emails[] = 'woocommerce_order_status_pending_to_quote';
+        $emails[] = 'woocommerce_order_status_pending_to_quote';
         $emails[] = 'woocommerce_order_status_pending_to_invoice';
         return $emails;
     }    
@@ -25,7 +25,7 @@ if ( ! defined('ABSPATH') ) { exit;
      * @since   1.0
      */
     function sliced_add_woocommerce_quote_email( $emails ) {
-        $emails['WC_Email_Customer_Quote'] = include( 'class-wc-email-customer-quote.php' );
+		$emails['WC_Email_Customer_Quote'] = include( 'class-wc-email-customer-quote.php' );
         return $emails;
     }
 

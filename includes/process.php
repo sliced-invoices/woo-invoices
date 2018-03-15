@@ -72,7 +72,13 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
         }
 
     }
-    update_post_meta( $id, "_sliced_${type}_woocommerce_order", sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
+    //update_post_meta( $id, "_sliced_${type}_woocommerce_order", sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
+	// maybe set both for now, just to be safe:
+	update_post_meta( $id, "_sliced_invoice_woocommerce_order", sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
+	if( $type == 'quote' ) {
+		update_post_meta( $id, "_sliced_quote_woocommerce_order", sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
+	}
+	
     update_post_meta( $id, "_sliced_${type}_created", time() );
     
     /*

@@ -11,7 +11,7 @@
  * Text Domain:       woo-invoices
  * Domain Path:       /languages
  * WC requires at least: 2.7
- * WC tested up to: 3.2
+ * WC tested up to: 3.3
  */
 
 
@@ -89,6 +89,7 @@ function woocommerce_sliced_invoices_init() {
             $this->enable_for_virtual   = $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes' ? true : false;
             $this->quote_or_invoice     = $this->get_option( 'quote_or_invoice', 'invoice' ) === 'invoice' ? 'invoice' : 'quote';
             $this->auto_invoice_email   = $this->get_option( 'auto_invoice_email', 'yes' ) === 'yes' ? true : false;
+			$this->auto_quote_email     = $this->get_option( 'auto_quote_email', 'yes' ) === 'yes' ? true : false;
             $this->custom_button_text   = $this->get_option( 'custom_button_text' );
             $this->button_product_types = $this->get_option( 'button_product_types' );
 
@@ -127,22 +128,19 @@ function woocommerce_sliced_invoices_init() {
                     'description' => sprintf( __( '<strong>Important:</strong> When a user checks out and chooses to \'Pay via %1s\', you need to let them know how they can pay for the %2s.<br>Currently only Sliced Invoices payment methods can be displayed / activated on %3s. Go to Sliced Invoices <a target="_blank" href="%4s">Payment Settings</a> to add payment methods.<br>Woocommerce payment methods are not available to be displayed on %3s as yet.', 'woo-invoices' ), sliced_get_invoice_label(), sliced_get_invoice_label(), sliced_get_invoice_label_plural(), esc_url( admin_url( 'admin.php?page=sliced_payments' ) ), sliced_get_invoice_label_plural() ),
                     'default'     => 'no'
                 ),
-                /*
-                 * Slated for version 2
-                 */
-                // 'quote_or_invoice' => array(
-                //     'title'             => sprintf( __( '%1s/%2s at Checkout', 'woo-invoices' ), sliced_get_quote_label(), sliced_get_invoice_label() ),
-                //     'type'              => 'select',
-                //     'class'             => 'wc-enhanced-select',
-                //     'css'               => 'width: 450px;',
-                //     'default'           => 'invoice',
-                //     'description'       => sprintf( __( 'Create either %1s or %2s when your users checkout. This only affects the front end checkout.', 'woo-invoices' ), sliced_get_quote_label_plural(), sliced_get_invoice_label_plural() ),
-                //     'options'           => array(
-                //         'quote' => sliced_get_quote_label_plural(),
-                //         'invoice' => sliced_get_invoice_label_plural()
-                //     ),
-                //     'desc_tip'          => true,
-                // ),
+                'quote_or_invoice' => array(
+                    'title'             => sprintf( __( '%1s/%2s at Checkout', 'woo-invoices' ), sliced_get_quote_label(), sliced_get_invoice_label() ),
+                    'type'              => 'select',
+                    'class'             => 'wc-enhanced-select',
+                    'css'               => 'width: 450px;',
+                    'default'           => 'invoice',
+                    'description'       => sprintf( __( 'Create either %1s or %2s when your users checkout. This only affects the front end checkout.', 'woo-invoices' ), sliced_get_quote_label_plural(), sliced_get_invoice_label_plural() ),
+                    'options'           => array(
+                        'quote'   => sliced_get_quote_label_plural(),
+                        'invoice' => sliced_get_invoice_label_plural()
+                    ),
+                    'desc_tip'          => true,
+                ),
                 'title' => array(
                     'title'       => __( 'Title', 'woo-invoices' ),
                     'type'        => 'text',
@@ -179,8 +177,14 @@ function woocommerce_sliced_invoices_init() {
                 ),
                 'auto_invoice_email' => array(
                     'title'             => sprintf( __( 'Auto send %s email', 'woo-invoices' ), sliced_get_invoice_label() ),
-                    'label'             => sprintf( __( 'Send %s email automatically once user checks out', 'woo-invoices' ), sliced_get_invoice_label(), sliced_get_invoice_label() ),
+                    'label'             => sprintf( __( 'Send %s email automatically once user checks out (if applicable)', 'woo-invoices' ), sliced_get_invoice_label(), sliced_get_invoice_label() ),
                     'description'       => sprintf( __( 'You can automatically attach a PDF version of the %1s by using the Sliced Invoices <a target="_blank" href="%2s">PDF Extension</a>.<br>The extension also adds a \'Print PDF\' button to each %3s allowing your clients to easily print their %4s.', 'woo-invoices' ), sliced_get_invoice_label(), esc_url( 'https://slicedinvoices.com/extensions/pdf-email/' ),sliced_get_invoice_label_plural(), sliced_get_invoice_label_plural() ),
+                    'type'              => 'checkbox',
+                    'default'           => 'yes',
+                ),
+                'auto_quote_email' => array(
+                    'title'             => sprintf( __( 'Auto send %s email', 'woo-invoices' ), sliced_get_quote_label() ),
+                    'label'             => sprintf( __( 'Send %s email automatically once user checks out (if applicable)', 'woo-invoices' ), sliced_get_quote_label(), sliced_get_quote_label() ),
                     'type'              => 'checkbox',
                     'default'           => 'yes',
                 ),
@@ -242,12 +246,6 @@ function woocommerce_sliced_invoices_init() {
                 //         'simple'    => __( 'Simple', 'woocommerce' ),
                 //         'variable'  => __( 'Variable', 'woocommerce' ),
                 //     )
-                // ),
-                // 'auto_quote_email' => array(
-                //     'title'             => sprintf( __( 'Auto send %s email', 'woo-invoices' ), sliced_get_quote_label() ),
-                //     'label'             => sprintf( __( 'Send %s email automatically once user checks out', 'woo-invoices' ), sliced_get_quote_label(), sliced_get_quote_label() ),
-                //     'type'              => 'checkbox',
-                //     'default'           => 'yes',
                 // ),
 
            );
@@ -358,10 +356,13 @@ function woocommerce_sliced_invoices_init() {
 				$order->reduce_order_stock();
 			}
 
-            if( $this->auto_invoice_email ) {
+            if( $this->quote_or_invoice === 'invoice' && $this->auto_invoice_email ) {
                 // send the invoice
                 $this->customer_invoice( $order );
-            } 
+            } elseif ( $this->quote_or_invoice === 'quote' && $this->auto_quote_email ) {
+				// send the quote
+				$this->customer_quote( $order );
+			}
 
             // Remove cart
             WC()->cart->empty_cart();
@@ -390,6 +391,15 @@ function woocommerce_sliced_invoices_init() {
          */
         public function customer_invoice( $order ) {
             $email = new WC_Email_Customer_Invoice;
+            $email->trigger( $order );
+        }
+
+        /**
+         * Prepare and send the customer quote email on demand.
+         */
+        public function customer_quote( $order ) {
+			debug_print_backtrace();
+            $email = new WC_Email_Customer_Quote;
             $email->trigger( $order );
         }
 
