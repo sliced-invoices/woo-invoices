@@ -188,6 +188,12 @@ function woocommerce_sliced_invoices_init() {
                     'type'              => 'checkbox',
                     'default'           => 'yes',
                 ),
+				'show_order_item_sku' => array(
+                    'title'             => __( 'Show SKU on line items', 'woo-invoices' ),
+                    'label'             => '',
+                    'type'              => 'checkbox',
+                    'default'           => 'yes',
+				),
 				'show_order_item_meta' => array(
                     'title'             => __( 'Show meta fields on line items', 'woo-invoices' ),
                     'label'             => '',

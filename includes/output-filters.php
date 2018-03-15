@@ -437,6 +437,11 @@ if ( ! defined('ABSPATH') ) { exit;
                     
                     $output .= '<td class="service">' . apply_filters( 'woocommerce_order_item_name', $is_visible ? sprintf( '<a href="%s">%s</a>', get_permalink( $item['product_id'] ), $item['name'] ) : $item['name'], $item, $is_visible );
 					
+					if ( isset( $settings['show_order_item_sku'] ) && $settings['show_order_item_sku'] === 'yes' ) {
+						$sku = $product->get_sku();
+						$output .= '<br/><span class="description"><strong>SKU:</strong> '.$sku.'</span>';
+					}
+					
 					if ( isset( $settings['show_order_item_meta'] ) && $settings['show_order_item_meta'] === 'yes' ) {
 						$output .= '<br/><span class="description">';
 						$item_metas = sliced_get_woocommerce_order_item_metas( $item );
