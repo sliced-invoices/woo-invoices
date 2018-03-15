@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Woo Invoices\n"
-"POT-Creation-Date: 2017-08-08 02:36-0700\n"
+"POT-Creation-Date: 2018-03-15 00:06-0700\n"
 "PO-Revision-Date: 2017-08-08 02:36-0700\n"
 "Last-Translator: \n"
 "Language-Team: Sliced Invoices <info@slicedinvoices.com>\n"
@@ -138,32 +138,32 @@ msgstr ""
 msgid "%s Totals"
 msgstr ""
 
-#: includes/output-filters.php:395
+#: includes/output-filters.php:415
 msgid "Hrs/Qty"
 msgstr ""
 
-#: includes/output-filters.php:396
+#: includes/output-filters.php:416
 msgid "Service"
 msgstr ""
 
-#: includes/output-filters.php:397
+#: includes/output-filters.php:417
 msgid "Rate/Price"
 msgstr ""
 
-#: includes/output-filters.php:398
+#: includes/output-filters.php:418
 msgid "Sub Total"
 msgstr ""
 
-#: includes/output-filters.php:446
-msgid "Billing Address"
+#: includes/output-filters.php:490
+msgid "Billing address"
 msgstr ""
 
-#: includes/output-filters.php:447 includes/output-filters.php:453
+#: includes/output-filters.php:491 includes/output-filters.php:497
 msgid "N/A"
 msgstr ""
 
-#: includes/output-filters.php:452
-msgid "Shipping Address"
+#: includes/output-filters.php:496
+msgid "Shipping address"
 msgstr ""
 
 #: woo-invoices.php:43
@@ -175,15 +175,15 @@ msgstr ""
 msgid "Create %1s and %2s from Woocommerce orders using Sliced Invoices."
 msgstr ""
 
-#: woo-invoices.php:124
+#: woo-invoices.php:125
 msgid "Enable/Disable"
 msgstr ""
 
-#: woo-invoices.php:125
+#: woo-invoices.php:126
 msgid "Enable Sliced Invoices as a payment method"
 msgstr ""
 
-#: woo-invoices.php:127
+#: woo-invoices.php:128
 #, php-format
 msgid ""
 "<strong>Important:</strong> When a user checks out and chooses to 'Pay via "
@@ -194,90 +194,102 @@ msgid ""
 "displayed on %3s as yet."
 msgstr ""
 
-#: woo-invoices.php:147
+#: woo-invoices.php:132
+#, php-format
+msgid "%1s/%2s at Checkout"
+msgstr ""
+
+#: woo-invoices.php:137
+#, php-format
+msgid ""
+"Create either %1s or %2s when your users checkout. This only affects the "
+"front end checkout."
+msgstr ""
+
+#: woo-invoices.php:145
 msgid "Title"
 msgstr ""
 
-#: woo-invoices.php:149
+#: woo-invoices.php:147
 #, php-format
 msgid ""
 "Payment method title that the customer will see on your website. Suggested: "
 "'Pay via %1s'."
 msgstr ""
 
-#: woo-invoices.php:150
+#: woo-invoices.php:148
 #, php-format
 msgid "Pay via %s"
 msgstr ""
 
-#: woo-invoices.php:154
+#: woo-invoices.php:152
 msgid "Description"
 msgstr ""
 
-#: woo-invoices.php:156
+#: woo-invoices.php:154
 msgid ""
 "Payment method description that the customer will see on your website during "
 "checkout."
 msgstr ""
 
-#: woo-invoices.php:157
+#: woo-invoices.php:155
 #, php-format
 msgid "An %s will be created for payment at a later date."
 msgstr ""
 
-#: woo-invoices.php:161
+#: woo-invoices.php:159
 msgid "Instructions"
 msgstr ""
 
-#: woo-invoices.php:163
+#: woo-invoices.php:161
 msgid ""
 "Instructions or a thank you note that can be added to the Order Received "
 "page after checkout."
 msgstr ""
 
-#: woo-invoices.php:164
+#: woo-invoices.php:162
 #, php-format
 msgid ""
 "You can view and pay for the %s by clicking the button below or by visiting "
 "your account page at any time."
 msgstr ""
 
-#: woo-invoices.php:168
+#: woo-invoices.php:166
 msgid "Instructions in Email"
 msgstr ""
 
-#: woo-invoices.php:170
+#: woo-invoices.php:168
 msgid "Instructions that will be added to the emails."
 msgstr ""
 
-#: woo-invoices.php:171
+#: woo-invoices.php:169
 #, php-format
 msgid ""
 "Thank you for your recent order, you can view and pay for the %s by clicking "
 "the button below or by visiting your account page at any time."
 msgstr ""
 
-#: woo-invoices.php:175
+#: woo-invoices.php:173
 msgid "Button in Email"
 msgstr ""
 
-#: woo-invoices.php:176
+#: woo-invoices.php:174
 #, php-format
 msgid ""
 "This will include a View %1s Button in the email below the instructions."
 msgstr ""
 
-#: woo-invoices.php:181
+#: woo-invoices.php:179 woo-invoices.php:186
 #, php-format
 msgid "Auto send %s email"
 msgstr ""
 
-#: woo-invoices.php:182
+#: woo-invoices.php:180 woo-invoices.php:187
 #, php-format
-msgid "Send %s email automatically once user checks out"
+msgid "Send %s email automatically once user checks out (if applicable)"
 msgstr ""
 
-#: woo-invoices.php:183
+#: woo-invoices.php:181
 #, php-format
 msgid ""
 "You can automatically attach a PDF version of the %1s by using the Sliced "
@@ -286,42 +298,50 @@ msgid ""
 "to easily print their %4s."
 msgstr ""
 
-#: woo-invoices.php:188
+#: woo-invoices.php:192
+msgid "Show SKU on line items"
+msgstr ""
+
+#: woo-invoices.php:198
+msgid "Show meta fields on line items"
+msgstr ""
+
+#: woo-invoices.php:204
 msgid "Enable for shipping methods"
 msgstr ""
 
-#: woo-invoices.php:193
+#: woo-invoices.php:209
 #, php-format
 msgid ""
 "If %s method is only available for certain Shipping methods, set it up here. "
 "Leave blank to enable for all Shipping methods."
 msgstr ""
 
-#: woo-invoices.php:197
+#: woo-invoices.php:213
 msgid "Select shipping methods"
 msgstr ""
 
-#: woo-invoices.php:201
+#: woo-invoices.php:217
 msgid "Choose Payment Methods"
 msgstr ""
 
-#: woo-invoices.php:202
+#: woo-invoices.php:218
 #, php-format
 msgid ""
 "Choose the Payment Methods to display on %s. These are set in the Sliced "
 "Invoices Payment Settings and are separate to Woocommerce Checkout Options."
 msgstr ""
 
-#: woo-invoices.php:211
+#: woo-invoices.php:227
 msgid "Accept for virtual orders"
 msgstr ""
 
-#: woo-invoices.php:212
+#: woo-invoices.php:228
 #, php-format
 msgid "Accept %s method if the order is virtual"
 msgstr ""
 
-#: woo-invoices.php:413
+#: woo-invoices.php:446
 #, php-format
 msgid "View this %s online"
 msgstr ""
