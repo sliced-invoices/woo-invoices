@@ -270,6 +270,20 @@ if ( ! defined('ABSPATH') ) { exit;
         $formatted = $order->get_formatted_order_total();
         return $formatted;
     }
+	
+	/**
+	 * Get order item metas
+	 * @since 1.1
+	 */
+	function sliced_get_woocommerce_order_item_metas( $item ) {
+		$item_metas = array();
+		$item_meta_data = $item->get_meta_data();
+		foreach ( $item_meta_data as $key => $value ) {
+			$data = $value->get_data();
+			$item_metas[ $data['key'] ] = $data['value'];
+		}
+		return apply_filters( 'sliced_woocommerce_order_item_metas', $item_metas );
+	}
 
     /**
      * Do prices include tax
@@ -391,6 +405,8 @@ if ( ! defined('ABSPATH') ) { exit;
 
         if( ! isset( $order ) || $order == false || empty( $order ) )
             return $output;
+			
+		$settings = get_option( 'woocommerce_sliced-invoices_settings', true );
 
         $output = null;
         $output = '<table class="table table-sm table-bordered table-striped">
@@ -403,6 +419,8 @@ if ( ! defined('ABSPATH') ) { exit;
                 </tr>
             </thead>
             <tbody>';
+			
+			//$sliced_items = sliced_get_invoice_line_items();
 
             foreach( $order->get_items() as $item_id => $item ) {
 
@@ -417,7 +435,24 @@ if ( ! defined('ABSPATH') ) { exit;
                             
                     $output .= '<td class="qty">' . apply_filters( 'woocommerce_order_item_quantity_html', ' <strong class="product-quantity">' . sprintf( '%s', wp_kses_post( $item['qty'] ) ) . '</strong>', $item ) . '</td>';
                     
-                    $output .= '<td class="service">' . apply_filters( 'woocommerce_order_item_name', $is_visible ? sprintf( '<a href="%s">%s</a>', get_permalink( $item['product_id'] ), $item['name'] ) : $item['name'], $item, $is_visible ) . '</td>';
+                    $output .= '<td class="service">' . apply_filters( 'woocommerce_order_item_name', $is_visible ? sprintf( '<a href="%s">%s</a>', get_permalink( $item['product_id'] ), $item['name'] ) : $item['name'], $item, $is_visible );
+					
+					if ( isset( $settings['show_order_item_meta'] ) && $settings['show_order_item_meta'] === 'yes' ) {
+						$output .= '<br/><span class="description">';
+						$item_metas = sliced_get_woocommerce_order_item_metas( $item );
+						foreach ( $item_metas as $key => $value ) {
+							$output .= '<strong>'.$key.':</strong> '.$value.'<br />';
+						}
+						$output .= '</span>';
+					}
+					
+					/*
+					if ( isset( $sliced_items["description"] ) ) {
+						$output .= '<br/><span class="description">' . wpautop( wp_kses_post( $item["description"] ) ) . '</span>';
+					}
+					*/
+					
+					$output .= '</td>';
                     
                     $output .= '<td class="rate">' . wp_kses_post( wc_price( $order->get_item_subtotal( $item ) ) ) . '</td>';
 

@@ -188,6 +188,12 @@ function woocommerce_sliced_invoices_init() {
                     'type'              => 'checkbox',
                     'default'           => 'yes',
                 ),
+				'show_order_item_meta' => array(
+                    'title'             => __( 'Show meta fields on line items', 'woo-invoices' ),
+                    'label'             => '',
+                    'type'              => 'checkbox',
+                    'default'           => 'yes',
+				),
                 'enable_for_methods' => array(
                     'title'             => __( 'Enable for shipping methods', 'woo-invoices' ),
                     'type'              => 'multiselect',
