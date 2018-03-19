@@ -125,7 +125,7 @@ function woocommerce_sliced_invoices_init() {
                     'title'       => __( 'Enable/Disable', 'woocommerce' ),
                     'label'       => __( 'Enable Sliced Invoices as a payment method', 'woo-invoices' ),
                     'type'        => 'checkbox',
-                    'description' => sprintf( __( '<strong>Important:</strong> When a user checks out and chooses to \'Pay via %1s\', you need to let them know how they can pay for the %2s.<br>Currently only Sliced Invoices payment methods can be displayed / activated on %3s. Go to Sliced Invoices <a target="_blank" href="%4s">Payment Settings</a> to add payment methods.<br>Woocommerce payment methods are not available to be displayed on %3s as yet.', 'woo-invoices' ), sliced_get_invoice_label(), sliced_get_invoice_label(), sliced_get_invoice_label_plural(), esc_url( admin_url( 'admin.php?page=sliced_payments' ) ), sliced_get_invoice_label_plural() ),
+                    'description' => sprintf( __( '<strong>Important:</strong> When a user checks out and chooses to \'Pay via %1s\', you need to let them know how they can pay for the %2s.<br>Currently only Sliced Invoices payment methods can be displayed / activated on %3s. Go to Sliced Invoices <a target="_blank" href="%4s">Payment Settings</a> to add payment methods.<br>Woocommerce payment methods are not available to be displayed on %3s as yet.', 'woo-invoices' ), sliced_get_invoice_label(), sliced_get_invoice_label(), sliced_get_invoice_label_plural(), esc_url( admin_url( 'admin.php?page=sliced_invoices_settings&tab=payments' ) ), sliced_get_invoice_label_plural() ),
                     'default'     => 'no'
                 ),
                 'quote_or_invoice' => array(
