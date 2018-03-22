@@ -23,7 +23,8 @@ if ( ! defined('ABSPATH') ) { exit;
     add_filter( 'sliced_display_the_line_totals', 'sliced_woocommerce_display_the_line_totals_admin', 999, 2 );
     
     // modify the HTML output on the front end
-    add_action( 'sliced_invoice_before_totals_table', 'sliced_display_woocommerce_totals' );
+    add_action( 'sliced_quote_before_totals_table', 'sliced_display_woocommerce_totals' );
+	add_action( 'sliced_invoice_before_totals_table', 'sliced_display_woocommerce_totals' );
     add_filter( 'sliced_invoice_line_items_output', 'sliced_display_woocommerce_line_items', 1, 1 );
     add_filter( 'sliced_to_address_output', 'sliced_display_woocommerce_to_address', 1, 1 );
 
