@@ -440,14 +440,18 @@ if ( ! defined('ABSPATH') ) { exit;
 					
 					if ( isset( $settings['show_order_item_sku'] ) && $settings['show_order_item_sku'] === 'yes' ) {
 						$sku = $product->get_sku();
-						$output .= '<br/><span class="description"><strong>SKU:</strong> '.$sku.'</span>';
+						if ( $sku > '' ) {
+							$output .= '<br/><span class="description"><strong>SKU:</strong> '.$sku.'</span>';
+						}
 					}
 					
 					if ( isset( $settings['show_order_item_meta'] ) && $settings['show_order_item_meta'] === 'yes' ) {
 						$output .= '<br/><span class="description">';
 						$item_metas = sliced_get_woocommerce_order_item_metas( $item );
 						foreach ( $item_metas as $key => $value ) {
-							$output .= '<strong>'.$key.':</strong> '.$value.'<br />';
+							if ( $value > '' ) {
+								$output .= '<strong>'.$key.':</strong> '.$value.'<br />';
+							}
 						}
 						$output .= '</span>';
 					}
