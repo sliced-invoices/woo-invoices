@@ -3,7 +3,7 @@ Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,11 @@ We are currently working on documentation but in the meantime, you can use the s
 Coming soon
 
 == Changelog ==
+
+= 1.1.1 =
+* FIX: issue with quote display (see also Sliced Invoices v3.7.1)
+* FIX: only show sku and/or meta fields if they are not empty
+* UPDATE: update .pot file for translations
 
 = 1.1.0 =
 * NEW: ability to choose whether to create a quote or an invoice at checkout.  (Previously "invoice" was the only option at checkout, now you can choose either quote or invoice.)
