@@ -171,10 +171,15 @@ if ( ! defined('ABSPATH') ) { exit;
      */
     function sliced_add_meta_box_to_woocomerce_order() {
 
+		if ( ! isset( $_GET['post'] ) ) {
+			return;
+		}
+		
         // check if we have a published invoice
         $id = (int) $_GET['post'];
-        if ( $id == null || $id == 0 )
+        if ( $id == null || $id == 0 ) {
             return;
+		}
 
         $sliced_id = sliced_woocommerce_get_invoice_id( $id );
         if( $sliced_id ) {

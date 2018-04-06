@@ -1,13 +1,12 @@
 <?php
 // Exit if accessed directly
-if ( ! defined('ABSPATH') ) { exit;
-}
+if ( ! defined('ABSPATH') ) { exit; }
 
 add_action( 'woocommerce_saved_order_items', 'sliced_woocommerce_update_from_admin_order', 10, 2 );
 add_filter( 'woocommerce_email_attachments', 'sliced_attach_pdf_to_woocomerce_email', 999, 3);
 
 // gets the customer details from within an order
-add_filter( 'woocommerce_found_customer_details', 'sliced_woocomerce_get_customer_details', 10, 3 );
+add_filter( 'woocommerce_ajax_get_customer_details', 'sliced_woocomerce_get_customer_details', 10, 3 );
 
 // client accepts the quote
 add_action( 'sliced_client_accepted_quote', 'sliced_woocommerce_client_accepted_quote');
@@ -339,24 +338,24 @@ function sliced_attach_pdf_to_woocomerce_email( $attachments, $status, $order ) 
  * Loads some missing data when adding a customer to an order
  * @since  1.0
  */ 
-function sliced_woocomerce_get_customer_details( $customer_data, $user_id, $type_to_load ) {
+function sliced_woocomerce_get_customer_details( $data, $customer, $user_id ) {
 
     $client = get_userdata( $user_id );
 
-    if( ! isset( $customer_data['billing_first_name'] ) || $customer_data['billing_first_name'] == '' ) {
-        $customer_data['billing_first_name'] = $client->first_name;
+    if( ! isset( $data['billing']['first_name'] ) || $data['billing']['first_name'] == '' ) {
+        $data['billing']['first_name'] = $client->first_name;
     }
-    if( ! isset( $customer_data['billing_last_name'] ) || $customer_data['billing_last_name'] == '' ) {
-        $customer_data['billing_last_name'] = $client->last_name;
+    if( ! isset( $data['billing']['last_name'] ) || $data['billing']['last_name'] == '' ) {
+        $data['billing']['last_name'] = $client->last_name;
     }
-    if( ! isset( $customer_data['billing_email'] ) || $customer_data['billing_email'] == '' ) {
-        $customer_data['billing_email'] = $client->user_email;
+    if( ! isset( $data['billing']['email'] ) || $data['billing']['email'] == '' ) {
+        $data['billing']['email'] = $client->user_email;
     }
-    if( ! isset( $customer_data['billing_company'] ) || $customer_data['billing_company'] == '' ) {
-        $customer_data['billing_company'] = get_user_meta( $user_id, '_sliced_client_business', true );
+    if( ! isset( $data['billing']['company'] ) || $data['billing']['company'] == '' ) {
+        $data['billing']['company'] = get_user_meta( $user_id, '_sliced_client_business', true );
     }
 
-    return $customer_data;
+    return $data;
 
 }
 
