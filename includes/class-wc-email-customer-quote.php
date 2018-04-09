@@ -79,7 +79,7 @@ class WC_Email_Customer_Quote extends WC_Email {
 			$this->find['order-date']      = '{order_date}';
 			$this->find['order-number']    = '{order_number}';
 
-			$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->get_order_date() ) );
+			$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->get_date_created() ) );
 			$this->replace['order-number'] = $this->object->get_order_number();
 		}
 
