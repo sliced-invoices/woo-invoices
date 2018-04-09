@@ -410,7 +410,6 @@ function woocommerce_sliced_invoices_init() {
          * Prepare and send the customer quote email on demand.
          */
         public function customer_quote( $order ) {
-			debug_print_backtrace();
             $email = new WC_Email_Customer_Quote;
             $email->trigger( $order );
         }
