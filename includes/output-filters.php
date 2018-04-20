@@ -428,7 +428,8 @@ if ( ! defined('ABSPATH') ) { exit;
                 $class = ($count % 2 == 0) ? "even" : "odd";
 
                 $product = apply_filters( 'woocommerce_order_item_product', $order->get_product_from_item( $item ), $item );
-                $purchase_note = get_post_meta( $product->get_id(), '_purchase_note', true );
+                
+				//$purchase_note = get_post_meta( $product->get_id(), '_purchase_note', true );
 
                 $is_visible = $product && $product->is_visible();
 
@@ -438,7 +439,7 @@ if ( ! defined('ABSPATH') ) { exit;
                     
                     $output .= '<td class="service">' . apply_filters( 'woocommerce_order_item_name', $is_visible ? sprintf( '<a href="%s">%s</a>', get_permalink( $item['product_id'] ), $item['name'] ) : $item['name'], $item, $is_visible );
 					
-					if ( isset( $settings['show_order_item_sku'] ) && $settings['show_order_item_sku'] === 'yes' ) {
+					if ( $product && isset( $settings['show_order_item_sku'] ) && $settings['show_order_item_sku'] === 'yes' ) {
 						$sku = $product->get_sku();
 						if ( $sku > '' ) {
 							$output .= '<br/><span class="description"><strong>SKU:</strong> '.$sku.'</span>';
