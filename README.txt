@@ -3,7 +3,7 @@ Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,10 @@ We are currently working on documentation but in the meantime, you can use the s
 Coming soon
 
 == Changelog ==
+
+= 1.1.4 =
+* FIX: issue with Client Area Extension not including shipping or taxes in displayed totals
+* FIX: more graceful handling of orders where one or more products no longer exist
 
 = 1.1.3 =
 * FIX: error message when checking out via quote in WooCommerce 3.x
