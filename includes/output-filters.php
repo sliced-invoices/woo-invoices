@@ -170,10 +170,14 @@ if ( ! defined('ABSPATH') ) { exit;
      * Display the totals in the admin area
      * @since  1.0
      */ 
-    function sliced_woocommerce_order_amounts( $id = null ) {
+    function sliced_woocommerce_order_amounts( $invoice_id = null ) {
 
-        $order_id = sliced_woocommerce_get_order_id( $id );
-        $order = sliced_woocommerce_get_order( $id );
+		if ( ! $invoice_id ) {
+			$invoice_id = sliced_get_the_id( $invoice_id );
+		}
+		
+        $order_id = sliced_woocommerce_get_order_id( $invoice_id );
+        $order = sliced_woocommerce_get_order( $invoice_id );
 
         if( ! $order) 
             return;
@@ -209,11 +213,11 @@ if ( ! defined('ABSPATH') ) { exit;
      * Get the raw total for payment gateways
      * @since  1.0
      */ 
-    function sliced_get_woocommerce_invoice_sub_total_raw( $total, $id ) {
-        $order_id = sliced_woocommerce_get_order_id();
+    function sliced_get_woocommerce_invoice_sub_total_raw( $total, $invoice_id = 0 ) {
+        $order_id = sliced_woocommerce_get_order_id( $invoice_id );
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
             return $total;
-        $totals     = sliced_woocommerce_order_amounts( $id );
+        $totals     = sliced_woocommerce_order_amounts( $invoice_id );
         $sub_total  = round( $totals['subtotal_raw'], sliced_get_decimals());
         $shipping   = round( $totals['shipping_raw'], sliced_get_decimals());
         $total      = $sub_total + $shipping;
@@ -224,11 +228,11 @@ if ( ! defined('ABSPATH') ) { exit;
      * Get the raw total for payment gateways
      * @since  1.0
      */ 
-    function sliced_get_woocommerce_invoice_total_raw( $total, $id ) {
-        $order_id = sliced_woocommerce_get_order_id();
+    function sliced_get_woocommerce_invoice_total_raw( $total, $invoice_id = 0 ) {
+        $order_id = sliced_woocommerce_get_order_id( $invoice_id );
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
             return $total;
-        $totals = sliced_woocommerce_order_amounts( $id );
+        $totals = sliced_woocommerce_order_amounts( $invoice_id );
         $total  = round( $totals['total_raw'], sliced_get_decimals());
         return $total;
     }
@@ -237,11 +241,11 @@ if ( ! defined('ABSPATH') ) { exit;
      * Get the raw total for payment gateways
      * @since  1.0
      */ 
-    function sliced_get_woocommerce_invoice_tax_raw( $total, $id ) {
-        $order_id = sliced_woocommerce_get_order_id();
+    function sliced_get_woocommerce_invoice_tax_raw( $total, $invoice_id = 0 ) {
+        $order_id = sliced_woocommerce_get_order_id( $invoice_id );
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
             return $total;
-        $totals = sliced_woocommerce_order_amounts( $id );
+        $totals = sliced_woocommerce_order_amounts( $invoice_id );
         $total = round( $totals['total_tax'], sliced_get_decimals());
         return $total;
     }
@@ -250,8 +254,8 @@ if ( ! defined('ABSPATH') ) { exit;
      * Get the currency symbol for payment gateways
      * @since  1.0
      */ 
-    function sliced_get_woocommerce_currency_symbol( $symbol ) {
-        $order_id = sliced_woocommerce_get_order_id();
+    function sliced_get_woocommerce_currency_symbol( $symbol, $invoice_id = 0 ) {
+        $order_id = sliced_woocommerce_get_order_id( $invoice_id );
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
             return $symbol;
         $symbol = get_woocommerce_currency_symbol();
@@ -319,15 +323,15 @@ if ( ! defined('ABSPATH') ) { exit;
      * Used in the admin area and the front end
      * @since  1.0
      */ 
-    function sliced_get_woocommerce_totals( $data, $id ) {
+    function sliced_get_woocommerce_totals( $data, $invoice_id = 0 ) {
 
-        $order = sliced_woocommerce_get_order();
+        $order = sliced_woocommerce_get_order( $invoice_id );
 
         if( ! isset( $order ) || $order == false || empty( $order ) ) {
             return $data;
 		}
 
-		$amount = sliced_woocommerce_order_amounts();
+		$amount = sliced_woocommerce_order_amounts( $invoice_id );
 		$total  = $amount['total_raw'];
 
 		if( wc_tax_enabled() ) {
