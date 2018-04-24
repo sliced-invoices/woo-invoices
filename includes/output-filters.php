@@ -20,6 +20,7 @@ if ( ! defined('ABSPATH') ) { exit;
     add_filter( 'sliced_get_currency_symbol', 'sliced_get_woocommerce_currency_symbol', 999, 2 );
 
     // modify output in the admin area
+	add_action( 'sliced_after_line_items_totals', 'sliced_woocommerce_hide_discount_field', 10, 2 );
     add_filter( 'sliced_display_the_line_totals', 'sliced_woocommerce_display_the_line_totals_admin', 999, 2 );
     
     // modify the HTML output on the front end
@@ -514,11 +515,22 @@ if ( ! defined('ABSPATH') ) { exit;
     /**
      * Hide adjust field
      *
-     * @since   2.0.0
+     * @since   ?
      */
     function sliced_woocommerce_hide_adjust_field( $value ) {
         if ( sliced_woocommerce_get_order_id( null ) ) {
             return true;
 		}
 		return $value;
+    }
+    
+    /**
+     * Hide discount field
+     *
+     * @since   1.1.4
+     */
+    function sliced_woocommerce_hide_discount_field( $line_items_group_id, $line_items ) {
+        if ( sliced_woocommerce_get_order_id( null ) ) {
+			$line_items->remove_field( 'sliced_invoice_discount' );
+		}
     }
