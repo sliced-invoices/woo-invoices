@@ -317,8 +317,9 @@ function sliced_woocommerce_client_declined_quote( $id ) {
 function sliced_attach_pdf_to_woocomerce_email( $attachments, $status, $order ) {
     
     // if we don't have the PDF and email extension installed, then return
-    if ( !class_exists( 'Sliced_Pdf' ) ) 
-        return;
+    if ( ! class_exists( 'Sliced_Pdf' ) ) {
+        return $attachments;
+	}
 
     $allowed_statuses = array( 'new_order', 'customer_invoice', 'customer_processing_order', 'customer_completed_order', 'customer_quote' );
 
