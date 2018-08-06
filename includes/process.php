@@ -11,7 +11,7 @@ add_filter( 'woocommerce_ajax_get_customer_details', 'sliced_woocomerce_get_cust
 // client accepts the quote
 add_action( 'sliced_client_accepted_quote', 'sliced_woocommerce_client_accepted_quote');
 
-// client declind the quote
+// client declined the quote
 add_action( 'sliced_client_declined_quote', 'sliced_woocommerce_client_declined_quote');
 
 // client makes a successful payment on an invoice
@@ -283,7 +283,6 @@ function sliced_woocommerce_client_accepted_quote( $id ) {
     }
     
     update_post_meta( $id, '_sliced_invoice_woocommerce_order', $order_id );
-    delete_post_meta( $id, '_sliced_quote_woocommerce_order' );
 
 }
 
