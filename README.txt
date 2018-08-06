@@ -3,7 +3,7 @@ Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,10 @@ We are currently working on documentation but in the meantime, you can use the s
 Coming soon
 
 == Changelog ==
+
+= 1.1.5 =
+* FIX: issue where quote loses connection to WooCommerce order upon acceptance, if "Accepted Quote Action" is set to "Create invoice, but keep quote"
+* FIX: issue where other plugins were inadvertently prevented from adding attachments to order-related emails
 
 = 1.1.4 =
 * FIX: issue with Client Area Extension not including shipping or taxes in displayed totals
