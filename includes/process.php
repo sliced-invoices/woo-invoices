@@ -26,8 +26,11 @@ add_action( 'sliced_client_declined_quote', 'sliced_woocommerce_client_declined_
 function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = null ) {
 
     // don't check for items as they may be empty
-    if ( ! $order || ! $type )
+    if ( ! $order || ! $type ) {
         return;
+	}
+	
+	$sliced_settings = get_option( 'woocommerce_sliced-invoices_settings' );
 
     /*
      * insert the invoice or quote
@@ -47,7 +50,11 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
      */
     if( $type == 'quote' ) {
         
-        wp_set_object_terms( $id, array( 'draft' ), $taxonomy );
+		if( $sliced_settings['auto_quote_email'] === 'yes' ) {
+			wp_set_object_terms( $id, array( 'sent' ), $taxonomy );
+		} else {
+			wp_set_object_terms( $id, array( 'draft' ), $taxonomy );
+		}
 
         update_post_meta( $id, "_sliced_quote_prefix", sliced_get_quote_prefix() );
         update_post_meta( $id, "_sliced_quote_number", sliced_get_next_quote_number() );
@@ -65,7 +72,6 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
         /*
          * Check the payment methods and add them to the invoice
          */
-        $sliced_settings = get_option( 'woocommerce_sliced-invoices_settings' );
         if( ! empty( $sliced_settings['enable_payment_methods'] ) ) {
             update_post_meta( $id, '_sliced_payment_methods', $sliced_settings['enable_payment_methods'] );
         }
