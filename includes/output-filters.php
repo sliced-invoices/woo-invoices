@@ -413,15 +413,15 @@ if ( ! defined('ABSPATH') ) { exit;
             return $output;
 			
 		$settings = get_option( 'woocommerce_sliced-invoices_settings', true );
+		$translate = get_option( 'sliced_translate' );
 
-        $output = null;
         $output = '<table class="table table-sm table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="qty"><strong>' . __( "Hrs/Qty", "sliced-invoices" ) . '</strong></th>
-                    <th class="service"><strong>' . __( "Service", "sliced-invoices" ) . '</strong></th>
-                    <th class="rate"><strong>' . __( "Rate/Price", "sliced-invoices" ) . '</strong></th>';
-                    $output .= '<th class="total"><strong>' . __( "Sub Total", "sliced-invoices" ) . '</strong></th>
+                    <th class="qty"><strong>' . ( isset( $translate['hrs_qty'] ) ? $translate['hrs_qty'] : __( 'Hrs/Qty', 'sliced-invoices') ) . '</strong></th>
+                    <th class="service"><strong>' . ( isset( $translate['service'] ) ? $translate['service'] : __( 'Service', 'sliced-invoices') ) . '</strong></th>
+                    <th class="rate"><strong>' . ( isset( $translate['rate_price'] ) ? $translate['rate_price'] : __( 'Rate/Price', 'sliced-invoices') ) . '</strong></th>
+					<th class="total"><strong>' . ( isset( $translate['sub_total'] ) ? $translate['sub_total'] : __( 'Sub Total', 'sliced-invoices') ) . '</strong></th>
                 </tr>
             </thead>
             <tbody>';
