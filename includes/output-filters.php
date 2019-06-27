@@ -362,7 +362,11 @@ if ( ! defined('ABSPATH') ) { exit;
 	 */
 	function sliced_woo_invoices_return_zero( $tax ) {
 		global $post;
-		if ( $post->post_type === 'sliced_invoice' && sliced_woocommerce_get_order_id( $post->ID ) > '' ) {
+		if (
+			isset( $post->post_type ) &&
+			$post->post_type === 'sliced_invoice' &&
+			sliced_woocommerce_get_order_id( $post->ID ) > ''
+		) {
 			return 0;
 		}
 		return $tax;
