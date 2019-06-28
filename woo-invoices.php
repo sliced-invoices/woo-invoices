@@ -16,14 +16,51 @@
 
 
 // Exit if accessed directly
-if ( ! defined('ABSPATH') ) { exit;
+if ( ! defined('ABSPATH') ) {
+	exit;
 }
 
 /**
- * Check if WooCommerce and sliced invoices is active
+ * Check if WooCommerce and Sliced Invoices are active
  **/
-if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
-if ( ! in_array( 'sliced-invoices/sliced-invoices.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
+function sliced_woocommerce_validate_settings() {
+	
+	$validated = true;
+
+	if ( ! in_array( 'sliced-invoices/sliced-invoices.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		
+		// Add a dashboard notice.
+		add_action( 'all_admin_notices', 'sliced_woocommerce_requirements_not_met_notice_sliced' );
+
+		$validated = false;
+	}
+	
+	if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		
+		// Add a dashboard notice.
+		add_action( 'all_admin_notices', 'sliced_woocommerce_requirements_not_met_notice_wc' );
+
+		$validated = false;
+	}
+	
+	return $validated;
+}
+
+function sliced_woocommerce_requirements_not_met_notice_wc() {
+	echo '<div id="message" class="error">';
+	echo '<p>' . sprintf( __( 'Woo Invoices cannot find the required <a href="%s">WooCommerce plugin</a>. Please make sure WooCommerce is <a href="%s">installed and activated</a>.', 'woo-invoices' ), 'https://wordpress.org/plugins/woocommerce/', admin_url( 'plugins.php' ) ) . '</p>';
+	echo '</div>';
+}
+
+function sliced_woocommerce_requirements_not_met_notice_sliced() {
+	echo '<div id="message" class="error">';
+	echo '<p>' . sprintf( __( 'Woo Invoices cannot find the required <a href="%s">Sliced Invoices plugin</a>. Please make sure Sliced Invoices is <a href="%s">installed and activated</a>.', 'woo-invoices' ), 'https://wordpress.org/plugins/sliced-invoices/', admin_url( 'plugins.php' ) ) . '</p>';
+	echo '</div>';
+}
+
+if ( ! sliced_woocommerce_validate_settings() ) {
+	return;
+}
 
 
 add_action('plugins_loaded', 'woocommerce_sliced_invoices_init', 49);
