@@ -3,7 +3,7 @@ Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,9 @@ We are currently working on documentation but in the meantime, you can use the s
 Coming soon
 
 == Changelog ==
+= 1.1.9 =
+* FIX: issue with Terms and Conditions not always populating in quotes/invoices attached to new orders.
+
 = 1.1.8 =
 * NEW: add requirements check. If either of the 2 required plugins are not found (WooCommerce or Sliced Invoices), a notice will be displayed to tell you this.
 * FIX: php notice
