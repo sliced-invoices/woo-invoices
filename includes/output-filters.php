@@ -434,8 +434,10 @@ if ( ! defined('ABSPATH') ) {
             <tbody>';
 			
 			//$sliced_items = sliced_get_invoice_line_items();
-
-            foreach( $order->get_items() as $item_id => $item ) {
+			
+			$count = 0;
+			
+			foreach( $order->get_items() as $item_id => $item ) {
 
                 $class = ($count % 2 == 0) ? "even" : "odd";
 
