@@ -144,6 +144,11 @@ function sliced_woocommerce_update_from_admin_order( $order_id, $items ) {
         // still need to run it through this to update the client or get existing
         sliced_woocommerce_maybe_add_client( $id, $order );
     };
+	
+	if ( ! $id ) {
+		// nothing more to do...
+		return;
+	}
 
 
     /*
