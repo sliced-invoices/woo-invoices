@@ -1,13 +1,9 @@
 <?php
 // Exit if accessed directly
-if ( ! defined('ABSPATH') ) { exit;
+if ( ! defined('ABSPATH') ) {
+	exit; 
 }
     
-    // change button text
-    add_filter( 'woocommerce_product_add_to_cart_text', 'sliced_woocommerce_custom_button_text' ); 
-    add_filter( 'woocommerce_product_single_add_to_cart_text', 'sliced_woocommerce_custom_button_text' );
-
-
     // some global type filters
     add_filter( 'sliced_totals_global_tax', 'sliced_set_woocommerce_tax_rate', 999, 2 );
     add_filter( 'sliced_invoice_totals', 'sliced_get_woocommerce_totals', 999, 2 );
@@ -36,47 +32,54 @@ if ( ! defined('ABSPATH') ) { exit;
 	add_filter( 'sliced_totals_global_tax', 'sliced_woo_invoices_return_zero', 1 );
 
 
-    function sliced_woocommerce_custom_button_text() {
+	/*
+	 * @TODO: consider if we even need this in a future version or not. (was a cool idea, but nobody has actually asked for it)
+	 */
+	// change button text
+    // add_filter( 'woocommerce_product_add_to_cart_text', 'sliced_woocommerce_custom_button_text' ); 
+    // add_filter( 'woocommerce_product_single_add_to_cart_text', 'sliced_woocommerce_custom_button_text' );
+
+    // function sliced_woocommerce_custom_button_text() {
         
-        global $product;
+        // global $product;
     
-        $product_type = $product->product_type;
+        // $product_type = $product->product_type;
 
-        $wc_si  = get_option( 'woocommerce_sliced-invoices_settings' );
-        $text   = $wc_si['custom_button_text'];
-        $types  = $wc_si['button_product_types'] != "" ? $wc_si['button_product_types'] : array();
+        // $wc_si  = get_option( 'woocommerce_sliced-invoices_settings' );
+        // $text   = $wc_si['custom_button_text'];
+        // $types  = $wc_si['button_product_types'] != "" ? $wc_si['button_product_types'] : array();
             
-        switch ( $product_type ) {
-            case 'external':
-                if( in_array( $product_type, $types) ) {
-                    return $text;
-                }
-                return __( 'Buy product', 'woocommerce' );
-            break;
-            case 'grouped':
-                if( in_array( $product_type, $types) ) {
-                    return $text;
-                }
-                return __( 'View products', 'woocommerce' );
-            break;
-            case 'simple':
-                if( in_array( $product_type, $types) ) {
-                    return $text;
-                }
-                return __( 'Add to cart', 'woocommerce' );
-            break;
-            case 'variable':
-                if( in_array( $product_type, $types) ) {
-                    return $text;
-                }
-                return __( 'Select options', 'woocommerce' );
-            break;
-            default:
-                return __( 'Read more', 'woocommerce' );
-        }    
+        // switch ( $product_type ) {
+            // case 'external':
+                // if( in_array( $product_type, $types) ) {
+                    // return $text;
+                // }
+                // return __( 'Buy product', 'woocommerce' );
+            // break;
+            // case 'grouped':
+                // if( in_array( $product_type, $types) ) {
+                    // return $text;
+                // }
+                // return __( 'View products', 'woocommerce' );
+            // break;
+            // case 'simple':
+                // if( in_array( $product_type, $types) ) {
+                    // return $text;
+                // }
+                // return __( 'Add to cart', 'woocommerce' );
+            // break;
+            // case 'variable':
+                // if( in_array( $product_type, $types) ) {
+                    // return $text;
+                // }
+                // return __( 'Select options', 'woocommerce' );
+            // break;
+            // default:
+                // return __( 'Read more', 'woocommerce' );
+        // }    
 
 
-    }
+    // }
 
 
     /**
