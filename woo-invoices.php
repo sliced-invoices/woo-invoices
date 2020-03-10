@@ -422,7 +422,7 @@ function woocommerce_sliced_invoices_init() {
 			if ( ! empty( $mails ) ) {
 				foreach ( $mails as $mail ) {
 					if ( $mail->id == 'new_order' ) {
-						$mail->trigger( $order->id, $order );
+						$mail->trigger( $order->get_id(), $order );
 					}
 				}
 			}
