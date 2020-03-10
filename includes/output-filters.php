@@ -436,7 +436,6 @@ if ( ! defined('ABSPATH') ) {
 			//$sliced_items = sliced_get_invoice_line_items();
 			
 			$count = 0;
-			
 			foreach( $order->get_items() as $item_id => $item ) {
 
                 $class = ($count % 2 == 0) ? "even" : "odd";
@@ -485,7 +484,7 @@ if ( ! defined('ABSPATH') ) {
 
                 $output .= '</tr>';
 
-            $count++; 
+				$count++; 
             } 
 
         $output .= '</tbody></table>';

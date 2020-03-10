@@ -397,6 +397,7 @@ function woocommerce_sliced_invoices_init() {
             
             // Mark as quote or invoice status
             $order->update_status( 'wc-' . $this->quote_or_invoice, '' );
+			// wp_update_post( array( 'ID' => $order_id, 'post_status' => 'wc-'.$this->quote_or_invoice ) );
 
             // Reduce stock levels
 			if ( version_compare( WC()->version, '3.0.0', '>=' ) ) {
@@ -405,12 +406,22 @@ function woocommerce_sliced_invoices_init() {
 				$order->reduce_order_stock();
 			}
 
-            if( $this->quote_or_invoice === 'invoice' && $this->auto_invoice_email ) {
-                // send the invoice
-                $this->customer_invoice( $order );
-            } elseif ( $this->quote_or_invoice === 'quote' && $this->auto_quote_email ) {
-				// send the quote
-				$this->customer_quote( $order );
+			// Maybe send email
+			// @HACK to prevent double emails in WC >= 3.9
+			// -- it used to be that $order->update_status() (see above) did NOT trigger any email,
+			// but now it does.  We could avoid this extra email by directly setting the status using
+			// wp_update_post(), but then the right hooks will not have fired to load our email
+			// classes by this point.  And, since we still have to support older WC versions, this
+			// easiest solution to make things work in all versions is just set a flag for ourselves
+			// in a postmeta.  So there.
+			if ( ! get_post_meta( $order->get_id(), '_sliced_email_sent', true ) === '1' ) {
+				if( $this->quote_or_invoice === 'invoice' && $this->auto_invoice_email ) {
+					// send the invoice
+					$this->customer_invoice( $order );
+				} elseif ( $this->quote_or_invoice === 'quote' && $this->auto_quote_email ) {
+					// send the quote
+					$this->customer_quote( $order );
+				}
 			}
 
             // Remove cart
@@ -475,6 +486,9 @@ function woocommerce_sliced_invoices_init() {
 				! $sent_to_admin &&
 				'sliced-invoices' === sliced_woocommerce_get_object_property( $order, 'order', 'payment_method' )
 			) {
+				
+				// @HACK to prevent double emails in WC >= 3.9
+				update_post_meta( $order->get_id(), '_sliced_email_sent', '1' );
 
                 echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
 
