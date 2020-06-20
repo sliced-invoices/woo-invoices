@@ -52,7 +52,7 @@ class WC_Email_Customer_Quote extends WC_Email {
 		parent::__construct();
 
 		$wc_si = get_option( 'woocommerce_sliced-invoices_settings' );
-        if( $wc_si['auto_quote_email'] === 'yes' ) {
+        if ( isset( $wc_si['auto_quote_email'] ) && $wc_si['auto_quote_email'] === 'yes' ) {
         	// Triggers for this email
 			add_action( 'woocommerce_order_status_pending_to_quote_notification', array( $this, 'trigger' ) );
 		}
