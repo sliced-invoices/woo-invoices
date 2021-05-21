@@ -30,7 +30,7 @@ function sliced_woocommerce_validate_settings() {
 	if ( ! in_array( 'sliced-invoices/sliced-invoices.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		
 		// Add a dashboard notice.
-		add_action( 'all_admin_notices', 'sliced_woocommerce_requirements_not_met_notice_sliced' );
+		add_action( 'admin_notices', 'sliced_woocommerce_requirements_not_met_notice_sliced' );
 
 		$validated = false;
 	}
@@ -38,7 +38,7 @@ function sliced_woocommerce_validate_settings() {
 	if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		
 		// Add a dashboard notice.
-		add_action( 'all_admin_notices', 'sliced_woocommerce_requirements_not_met_notice_wc' );
+		add_action( 'admin_notices', 'sliced_woocommerce_requirements_not_met_notice_wc' );
 
 		$validated = false;
 	}

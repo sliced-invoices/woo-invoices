@@ -38,27 +38,28 @@ if ( ! defined('ABSPATH') ) { exit;
         return $methods;
     }
 
-    /**
-     * Admin notices
-     *
-     * @since   1.0
-     */
-    function sliced_woocommerce_custom_admin_notices( $post_states ) {
-
-        global $pagenow;
-
-        /*
-         * Woocommerce order notice on invoice/quote
-         */
-        if ( $pagenow == 'post.php' && sliced_get_the_type() && sliced_woocommerce_get_order_id( $_GET['post'] ) ) {
-             echo '<div class="notice notice-info is-dismissible woo">
-                <span class="woo-logo"></span>
-                <p>' . sprintf( __( 'This %1s is tied to a Woocommerce order. If you are wanting to edit prices and products, you should be editing the order itself and not this %2s.', 'sliced-invoices' ), sliced_get_label(), sliced_get_label() ) . '<br>
-                 ' . sprintf( __( 'You should only be editing the Terms & Conditions, the Status, Invoice Number and Dates in here.', 'sliced-invoices' ), sliced_get_label(), sliced_get_label() ) . '</p>
-             </div>';
-        }
-
-    }
+	/**
+	 * Admin notices
+	 *
+	 * @version 1.?.?
+	 * @since   1.0.0
+	 */
+	function sliced_woocommerce_custom_admin_notices() {
+		
+		global $pagenow;
+		
+		/*
+		 * Woocommerce order notice on invoice/quote
+		 */
+		if ( $pagenow === 'post.php' && sliced_get_the_type() && sliced_woocommerce_get_order_id( $_GET['post'] ) ) {
+			echo '<div class="notice notice-info is-dismissible woo">
+				<span class="woo-logo"></span>
+				<p>' . sprintf( __( 'This %1s is tied to a Woocommerce order. If you are wanting to edit prices and products, you should be editing the order itself and not this %2s.', 'sliced-invoices' ), sliced_get_label(), sliced_get_label() ) . '<br>
+				 ' . sprintf( __( 'You should only be editing the Terms & Conditions, the Status, Invoice Number and Dates in here.', 'sliced-invoices' ), sliced_get_label(), sliced_get_label() ) . '</p>
+			</div>';
+		}
+		
+	}
 
 
     /**
