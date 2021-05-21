@@ -41,7 +41,7 @@ if ( ! defined('ABSPATH') ) { exit;
 	/**
 	 * Admin notices
 	 *
-	 * @version 1.?.?
+	 * @version 1.2.2
 	 * @since   1.0.0
 	 */
 	function sliced_woocommerce_custom_admin_notices() {
