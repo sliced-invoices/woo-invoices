@@ -155,10 +155,11 @@ function woocommerce_sliced_invoices_init() {
         public function init_form_fields() {
             $shipping_methods = array();
 
-            if ( is_admin() )
-                foreach ( WC()->shipping()->load_shipping_methods() as $method ) {
-                    $shipping_methods[ $method->id ] = $method->get_title();
-                }
+			if ( is_admin() ) {
+				foreach ( WC()->shipping()->load_shipping_methods() as $method ) {
+					$shipping_methods[ $method->id ] = $method->get_method_title();
+				}
+			}
 
             $this->form_fields = array(
                 'enabled' => array(
