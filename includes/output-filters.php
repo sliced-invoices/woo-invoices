@@ -539,6 +539,9 @@ if ( ! defined('ABSPATH') ) {
      */
     function sliced_woocommerce_hide_discount_field( $line_items_group_id, $line_items ) {
         if ( sliced_woocommerce_get_order_id( null ) ) {
-			$line_items->remove_field( 'sliced_invoice_discount' );
+			$line_items->remove_field( '_sliced_discount' );               // for Sliced Invoices >= 3.9.0
+			$line_items->remove_field( '_sliced_discount_type' );          // for Sliced Invoices >= 3.9.0
+			$line_items->remove_field( '_sliced_discount_tax_treatment' ); // for Sliced Invoices >= 3.9.0
+			$line_items->remove_field( 'sliced_invoice_discount' );        // for Sliced Invoices < 3.9.0
 		}
     }
