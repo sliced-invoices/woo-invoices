@@ -535,6 +535,7 @@ if ( ! defined('ABSPATH') ) {
     /**
      * Hide discount field
      *
+	 * @version 1.2.3
      * @since   1.1.4
      */
     function sliced_woocommerce_hide_discount_field( $line_items_group_id, $line_items ) {

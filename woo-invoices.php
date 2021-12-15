@@ -5,7 +5,7 @@
  * Plugin Name:       Woo Invoices
  * Plugin URI:        https://wordpress.org/plugins/woo-invoices
  * Description:       Create invoices and quotes from your Woocommerce orders. Requirements: Sliced Invoices & Woocommerce Plugins
- * Version:           1.2.2
+ * Version:           1.2.3
  * Author:            Sliced Invoices
  * Author URI:        https://slicedinvoices.com/
  * Text Domain:       woo-invoices
@@ -14,7 +14,7 @@
  * License:           GPLv2
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
  * WC requires at least: 2.7
- * WC tested up to: 5.3
+ * WC tested up to: 5.9
  */
 
 
