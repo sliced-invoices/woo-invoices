@@ -262,7 +262,7 @@ if ( ! defined('ABSPATH') ) {
         $order_id = sliced_woocommerce_get_order_id( $invoice_id );
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
             return $symbol;
-        $symbol = get_woocommerce_currency_symbol();
+        $symbol = html_entity_decode( get_woocommerce_currency_symbol() );
         return $symbol;
     }
 
