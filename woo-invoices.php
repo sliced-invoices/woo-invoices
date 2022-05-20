@@ -219,7 +219,7 @@ function woocommerce_sliced_invoices_init() {
                 'auto_invoice_email' => array(
                     'title'             => sprintf( __( 'Auto send %s email', 'woo-invoices' ), sliced_get_invoice_label() ),
                     'label'             => sprintf( __( 'Send %s email automatically once user checks out (if applicable)', 'woo-invoices' ), sliced_get_invoice_label(), sliced_get_invoice_label() ),
-                    'description'       => sprintf( __( 'You can automatically attach a PDF version of the %1s by using the Sliced Invoices <a target="_blank" href="%2s">PDF Extension</a>.<br>The extension also adds a \'Print PDF\' button to each %3s allowing your clients to easily print their %4s.', 'woo-invoices' ), sliced_get_invoice_label(), esc_url( 'https://slicedinvoices.com/extensions/pdf-email/' ),sliced_get_invoice_label_plural(), sliced_get_invoice_label_plural() ),
+                    'description'       => sprintf( __( 'You can automatically attach a PDF version of the %1s by using the Sliced Invoices <a target="_blank" href="%2s">PDF Extension</a>.<br>The extension also adds a \'Print PDF\' button to each %3s allowing your clients to easily print their %4s.', 'woo-invoices' ), sliced_get_invoice_label(), esc_url( 'https://slicedinvoices.com/extensions/pdf-email/?utm_source=gateway_settings&utm_campaign=free&utm_medium=sliced_invoices_woocommerce' ),sliced_get_invoice_label_plural(), sliced_get_invoice_label_plural() ),
                     'type'              => 'checkbox',
                     'default'           => 'yes',
                 ),
