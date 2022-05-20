@@ -497,7 +497,10 @@ function woocommerce_sliced_invoices_init() {
                 echo wpautop( wptexturize( $this->instructions ) ) . PHP_EOL;
 
                 $sliced_id  = (int) sliced_woocommerce_get_invoice_id( sliced_woocommerce_get_object_property( $order, 'order', 'id' ) );
-                $btn_text   = sprintf( __( 'View this %s online', 'sliced-invoices' ), sliced_get_the_type( $sliced_id ) );
+                $btn_text   = sprintf(
+					__( 'View this %s online', 'woo-invoices' ),
+					sliced_get_the_type( $sliced_id ) === 'quote' ? sliced_get_quote_label() : sliced_get_invoice_label()
+				);
                 $color      = get_option( 'woocommerce_email_base_color' );
                 $base_text  = wc_light_or_dark( $color, '#202020', '#ffffff' );
 
