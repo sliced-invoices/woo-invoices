@@ -57,6 +57,7 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
 		}
 
 		$quote = get_option( 'sliced_quotes' );
+		update_post_meta( $id, '_sliced_quote_valid_until', Sliced_Quote::get_auto_valid_until_date() );
 		update_post_meta( $id, "_sliced_quote_terms", $quote['terms'] );
         update_post_meta( $id, "_sliced_quote_prefix", sliced_get_quote_prefix() );
         update_post_meta( $id, "_sliced_quote_number", sliced_get_next_quote_number() );
@@ -65,9 +66,9 @@ function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = nul
     } else {
 
         wp_set_object_terms( $id, array( 'unpaid' ), $taxonomy );
-
 		
 		$invoice = get_option( 'sliced_invoices' );
+		update_post_meta( $id, '_sliced_invoice_due', Sliced_Invoice::get_auto_due_date() );
 		update_post_meta( $id, "_sliced_invoice_terms", $invoice['terms'] );
         update_post_meta( $id, "_sliced_invoice_prefix", sliced_get_invoice_prefix() );
         update_post_meta( $id, "_sliced_invoice_number", sliced_get_next_invoice_number() );
