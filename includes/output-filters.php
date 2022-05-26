@@ -141,10 +141,12 @@ if ( ! defined('ABSPATH') ) {
     }
 
 
-    /**
-     * Display the totals in the admin area
-     * @since  1.0
-     */ 
+	/**
+	 * Display the totals in the admin area.
+	 * 
+	 * @version 1.2.4
+	 * @since   1.0.0
+	 */
     function sliced_woocommerce_display_the_line_totals_admin( $output ) {
 
         $order = sliced_woocommerce_get_order();
@@ -254,10 +256,12 @@ if ( ! defined('ABSPATH') ) {
         return $total;
     }
 
-    /**
-     * Get the currency symbol for payment gateways
-     * @since  1.0
-     */ 
+	/**
+	 * Get the currency symbol for payment gateways.
+	 * 
+	 * @version 1.2.4
+	 * @since   1.0.0
+	 */
     function sliced_get_woocommerce_currency_symbol( $symbol, $invoice_id = 0 ) {
         $order_id = sliced_woocommerce_get_order_id( $invoice_id );
         if( ! isset( $order_id ) || $order_id == false || empty( $order_id ) )
@@ -408,10 +412,12 @@ if ( ! defined('ABSPATH') ) {
 
     }
 
-    /**
-     * Display the totals on the invoice, direct form the Woocommerce order.
-     * @since  1.0
-     */ 
+	/**
+	 * Display the totals on the invoice, direct form the Woocommerce order.
+	 * 
+	 * @version 1.2.4
+	 * @since   1.0.0
+	 */
     function sliced_display_woocommerce_line_items( $output ) {
         
         $order = sliced_woocommerce_get_order();
@@ -491,10 +497,12 @@ if ( ! defined('ABSPATH') ) {
         return $output;
     }
 
-    /**
-     * Display the 'to' address using Woocommerce customer.
-     * @since  1.0
-     */ 
+	/**
+	 * Display the 'to' address using Woocommerce customer.
+	 * 
+	 * @version 1.2.4
+	 * @since   1.0.0
+	 */
     function sliced_display_woocommerce_to_address( $output ) {
         
         $order = sliced_woocommerce_get_order();

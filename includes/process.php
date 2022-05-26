@@ -18,11 +18,12 @@ add_action( 'sliced_client_declined_quote', 'sliced_woocommerce_client_declined_
 // add_action( 'sliced_payment_made', 'sliced_woocommerce_invoice_payment_made', 10, 3 );
 
 
-
 /**
  * Add the invoice or quote from the front end
- * @since  1.0
- */ 
+ * 
+ * @version 1.2.4
+ * @since   1.0.0
+ */
 function sliced_woocommerce_create_quote_or_invoice( $type, $order, $items = null ) {
 
     // don't check for items as they may be empty

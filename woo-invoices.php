@@ -1,27 +1,28 @@
 <?php
-
 /**
  * @wordpress-plugin
  * Plugin Name:       Woo Invoices
  * Plugin URI:        https://wordpress.org/plugins/woo-invoices
  * Description:       Create invoices and quotes from your Woocommerce orders. Requirements: Sliced Invoices & Woocommerce Plugins
- * Version:           1.2.3
+ * Version:           1.2.4
  * Author:            Sliced Invoices
  * Author URI:        https://slicedinvoices.com/
  * Text Domain:       woo-invoices
  * Domain Path:       /languages
- * Copyright:         © 2021 Sliced Software, LLC. All rights reserved.
+ * Copyright:         © 2022 Sliced Software, LLC. All rights reserved.
  * License:           GPLv2
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
  * WC requires at least: 2.7
- * WC tested up to: 5.9
+ * WC tested up to: 6.5
  */
 
-
-// Exit if accessed directly
 if ( ! defined('ABSPATH') ) {
-	exit;
+	exit; // Exit if accessed directly
 }
+
+define( 'SLICED_INVOICES_WOOCOMMERCE_VERSION', '1.2.4' );
+define( 'SLICED_INVOICES_WOOCOMMERCE_FILE', __FILE__ );
+define( 'SLICED_INVOICES_WOOCOMMERCE_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
  * Check if WooCommerce and Sliced Invoices are active
@@ -148,10 +149,12 @@ function woocommerce_sliced_invoices_init() {
             add_action( 'woocommerce_thankyou_sliced-invoices', array( $this, 'thankyou_page' ) );
         }
 
-
-        /**
-         * Initialise Gateway Settings Form Fields
-         */
+		/**
+		 * Initialise gateway settings form fields.
+		 * 
+		 * @version 1.2.4
+		 * @since   1.0.0
+		 */
         public function init_form_fields() {
             $shipping_methods = array();
 
@@ -475,15 +478,17 @@ function woocommerce_sliced_invoices_init() {
             }
         }
 
-        /**
-         * Add content to the WC emails.
-         *
-         * @access public
-         * @param WC_Order $order
-         * @param bool $sent_to_admin
-         * @param bool $plain_text
-         */
-        public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
+		/**
+		 * Add content to the WC emails.
+		 * 
+		 * @version 1.2.4
+		 * @since   1.0.0
+		 * 
+		 * @param WC_Order $order
+		 * @param bool $sent_to_admin
+		 * @param bool $plain_text
+		 */
+		public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
 			
 			if (
 				$this->instructions &&

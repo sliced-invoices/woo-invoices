@@ -2,8 +2,8 @@
 Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
-Tested up to: 5.8
-Stable tag: 1.2.3
+Tested up to: 6.0
+Stable tag: 1.2.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,26 +97,39 @@ You want to create Quotes from your Woocommerce orders and send to clients for a
 
 == Frequently Asked Questions ==
 
+= Minimum System Requirements =
+
+* WordPress 4.0 or newer
+* WooCommerce 2.7 or newer
+* Sliced Invoices 3.7 or newer
+* PHP version from 5.5 up to 8.0
+
 = Setup =
 
-1.	Go to Woocommerce Checkout Settings and click on Sliced Invoices
+1.	Go to WooCommerce / Settings / Payments and click on Sliced Invoices
 1.	Ensure that 'Enable/Disable' is checked
 1.	Configure the rest of the settings as you require and hit Save
 
 = Where can I get help? =
 
-We are currently working on documentation but in the meantime, you can use the support forums here or contact us directly at slicedinvoices.com
+For all support issues please [open a Support Ticket on our website](https://slicedinvoices.com/support-ticket/).
 
 == Screenshots ==
 
 Coming soon
 
 == Changelog ==
+= 1.2.4 =
+* UPDATE: automatically set invoice due date and quote "valid until" dates upon creation of invoice tied to a WooCommerce order. (Previously these fields were not set, so if you've not used this feature before be sure to check your default due date/valid until date settings).
+* UPDATE: updated .pot file for translations.
+* FIX: currency symbols encoding for invoices tied to WooCommerce (ref #141493).
+* FIX: minor translation issues.
+
 = 1.2.3 =
 * NEW: Spanish translation (thanks to Lolo Marchal).
-* FIX: issue with shipping methods setting having blank titles due to recent WC update.
 * UPDATE: changes for compatibility with forthcoming Sliced Invoices v3.9.0.
-* UPDATE: PHP 8 compatibility.
+* UPDATE: PHP 8.0 compatibility.
+* FIX: issue with shipping methods setting having blank titles due to recent WC update.
 
 = 1.2.2 =
 * FIX: conflict with Gravity Forms plugin >= v2.5.
@@ -135,68 +148,68 @@ Coming soon
 
 = 1.1.8 =
 * NEW: add requirements check. If either of the 2 required plugins are not found (WooCommerce or Sliced Invoices), a notice will be displayed to tell you this.
-* FIX: php notice
+* FIX: php notice.
 
 = 1.1.7 =
-* FIX: allow WooCommerce-tied invoices to use text labels from the "Translate" tab in Sliced Invoices
+* FIX: allow WooCommerce-tied invoices to use text labels from the "Translate" tab in Sliced Invoices.
 
 = 1.1.6 =
-* FIX: issue with quotes not being marked as "sent" even after the quote email was sent
+* FIX: issue with quotes not being marked as "sent" even after the quote email was sent.
 
 = 1.1.5 =
-* FIX: issue where quote loses connection to WooCommerce order upon acceptance, if "Accepted Quote Action" is set to "Create invoice, but keep quote"
-* FIX: issue where other plugins were inadvertently prevented from adding attachments to order-related emails
+* FIX: issue where quote loses connection to WooCommerce order upon acceptance, if "Accepted Quote Action" is set to "Create invoice, but keep quote".
+* FIX: issue where other plugins were inadvertently prevented from adding attachments to order-related emails.
 
 = 1.1.4 =
-* FIX: issue with Client Area Extension not including shipping or taxes in displayed totals
-* FIX: more graceful handling of orders where one or more products no longer exist
+* FIX: issue with Client Area Extension not including shipping or taxes in displayed totals.
+* FIX: more graceful handling of orders where one or more products no longer exist.
 
 = 1.1.3 =
-* FIX: error message when checking out via quote in WooCommerce 3.x
+* FIX: error message when checking out via quote in WooCommerce 3.x.
 
 = 1.1.2 =
-* FIX: various PHP notices, WooCommerce 3.x warnings
+* FIX: various PHP notices, WooCommerce 3.x warnings.
 
 = 1.1.1 =
-* FIX: issue with quote display (see also Sliced Invoices v3.7.1)
-* FIX: only show sku and/or meta fields if they are not empty
-* UPDATE: update .pot file for translations
+* FIX: issue with quote display (see also Sliced Invoices v3.7.1).
+* FIX: only show sku and/or meta fields if they are not empty.
+* UPDATE: update .pot file for translations.
 
 = 1.1.0 =
-* NEW: ability to choose whether to create a quote or an invoice at checkout.  (Previously "invoice" was the only option at checkout, now you can choose either quote or invoice.)
-* NEW: add option to show order item metas in line items
-* NEW: add option to show SKU in line items
-* UPDATE: allow "New Order" admin notification to be triggered when either a new quote or invoice is created
+* NEW: ability to choose whether to create a quote or an invoice at checkout.  (Previously "invoice" was the only option at checkout, now you can choose either quote or invoice).
+* NEW: add option to show order item metas in line items.
+* NEW: add option to show SKU in line items.
+* UPDATE: allow "New Order" admin notification to be triggered when either a new quote or invoice is created.
 
 = 1.0.9 =
-* FIX: rate/price column showing line sub total, not unit price
+* FIX: rate/price column showing line sub total, not unit price.
 
 = 1.0.8 =
-* FIX: compatibility issue with deposit invoices (for Sliced Invoices versions 3.6.0 and newer)
-* FIX: WooCommerce deprecated method
+* FIX: compatibility issue with deposit invoices (for Sliced Invoices versions 3.6.0 and newer).
+* FIX: WooCommerce deprecated method.
 
 = 1.0.7 =
-* FIX: issue with adjust field not showing
+* FIX: issue with adjust field not showing.
 
 = 1.0.6 =
-* FIX: compatibility issues with WooCommerce versions 3.0.0 and newer
-* UPDATE: add new .pot file for future translations
+* FIX: compatibility issues with WooCommerce versions 3.0.0 and newer.
+* UPDATE: add new .pot file for future translations.
 
 = 1.0.5 =
-* UPDATE: compatibility with Sliced Invoices v3.3.0
+* UPDATE: compatibility with Sliced Invoices v3.3.0.
 
 = 1.0.4 =
-* FIX: conflict between Sliced Invoices and WooCommerce tax settings
+* FIX: conflict between Sliced Invoices and WooCommerce tax settings.
 
 = 1.0.3 =
-* FIX: issue with payment amount passed to PayPal when using Deposit Invoices Extension
+* FIX: issue with payment amount passed to PayPal when using Deposit Invoices Extension.
 
 = 1.0.2 =
-* FIX: issues with tax calculation
-* UPDATE: Compatibility update with Sliced Invoices Deposit Invoices Extension v2.0.0
+* FIX: issues with tax calculation.
+* UPDATE: Compatibility update with Sliced Invoices Deposit Invoices Extension v2.0.0.
 
 = 1.0.1 =
-* FIX: Error on edit invoice when not related to a Woocommerce order
+* FIX: Error on edit invoice when not related to a Woocommerce order.
 
 = 1.0 =
-* Initial release at WordPress.org
+* Initial release at WordPress.org.
