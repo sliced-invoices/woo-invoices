@@ -444,8 +444,12 @@ if ( ! defined('ABSPATH') ) {
 			foreach( $order->get_items() as $item_id => $item ) {
 
                 $class = ($count % 2 == 0) ? "even" : "odd";
-
-                $product = apply_filters( 'woocommerce_order_item_product', $order->get_product_from_item( $item ), $item );
+				
+				if ( version_compare( WC()->version, '4.4.0', '>=' ) ) {
+					$product = apply_filters( 'woocommerce_order_item_product', $item->get_product(), $item );
+				} else {
+					$product = apply_filters( 'woocommerce_order_item_product', $order->get_product_from_item( $item ), $item );
+				}
                 
 				//$purchase_note = get_post_meta( $product->get_id(), '_purchase_note', true );
 

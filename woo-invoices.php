@@ -326,7 +326,11 @@ function woocommerce_sliced_invoices_init() {
                 // Test if order needs shipping.
                 if ( 0 < sizeof( $order->get_items() ) ) {
                     foreach ( $order->get_items() as $item ) {
-                        $_product = $order->get_product_from_item( $item );
+						if ( version_compare( WC()->version, '4.4.0', '>=' ) ) {
+							$_product = $item->get_product();
+						} else {
+							$_product = $order->get_product_from_item( $item );
+						}
                         if ( $_product && $_product->needs_shipping() ) {
                             $needs_shipping = true;
                             break;
