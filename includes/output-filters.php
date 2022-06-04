@@ -415,7 +415,7 @@ if ( ! defined('ABSPATH') ) {
 	/**
 	 * Display the totals on the invoice, direct form the Woocommerce order.
 	 * 
-	 * @version 1.2.4
+	 * @version 1.2.5
 	 * @since   1.0.0
 	 */
     function sliced_display_woocommerce_line_items( $output ) {
