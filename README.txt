@@ -3,7 +3,7 @@ Contributors: SlicedInvoices
 Tags: woocommerce, woocommerce invoice, woocommerce quote, woocommerce estimate, invoice, invoicing, quotes, quoting, estimates, billing, bills, paypal, invoice clients, invoice generator, invoice system, woocommerce add-on, woocommerce extension, woocommerce plugin
 Requires at least: 4.0
 Tested up to: 6.0
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,9 @@ For all support issues please [open a Support Ticket on our website](https://sli
 Coming soon
 
 == Changelog ==
+= 1.2.5 =
+* FIX: WC deprecated notice.
+
 = 1.2.4 =
 * UPDATE: automatically set invoice due date and quote "valid until" dates upon creation of invoice tied to a WooCommerce order. (Previously these fields were not set, so if you've not used this feature before be sure to check your default due date/valid until date settings).
 * UPDATE: updated .pot file for translations.

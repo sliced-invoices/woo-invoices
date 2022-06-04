@@ -4,7 +4,7 @@
  * Plugin Name:       Woo Invoices
  * Plugin URI:        https://wordpress.org/plugins/woo-invoices
  * Description:       Create invoices and quotes from your Woocommerce orders. Requirements: Sliced Invoices & Woocommerce Plugins
- * Version:           1.2.4
+ * Version:           1.2.5
  * Author:            Sliced Invoices
  * Author URI:        https://slicedinvoices.com/
  * Text Domain:       woo-invoices
@@ -20,7 +20,7 @@ if ( ! defined('ABSPATH') ) {
 	exit; // Exit if accessed directly
 }
 
-define( 'SLICED_INVOICES_WOOCOMMERCE_VERSION', '1.2.4' );
+define( 'SLICED_INVOICES_WOOCOMMERCE_VERSION', '1.2.5' );
 define( 'SLICED_INVOICES_WOOCOMMERCE_FILE', __FILE__ );
 define( 'SLICED_INVOICES_WOOCOMMERCE_PATH', plugin_dir_path( __FILE__ ) );
 
@@ -307,11 +307,12 @@ function woocommerce_sliced_invoices_init() {
            );
         }
 
-        /**
-         * Check If The Gateway Is Available For Use
-         *
-         * @return bool
-         */
+		/**
+		 * Check if the gateway is available for use.
+		 *
+		 * @version 1.2.5
+		 * @return bool
+		 */
         public function is_available() {
             $order          = null;
             $needs_shipping = false;
@@ -326,7 +327,11 @@ function woocommerce_sliced_invoices_init() {
                 // Test if order needs shipping.
                 if ( 0 < sizeof( $order->get_items() ) ) {
                     foreach ( $order->get_items() as $item ) {
-                        $_product = $order->get_product_from_item( $item );
+						if ( version_compare( WC()->version, '4.4.0', '>=' ) ) {
+							$_product = $item->get_product();
+						} else {
+							$_product = $order->get_product_from_item( $item );
+						}
                         if ( $_product && $_product->needs_shipping() ) {
                             $needs_shipping = true;
                             break;
