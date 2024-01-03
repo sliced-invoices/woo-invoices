@@ -78,8 +78,8 @@ function woocommerce_sliced_invoices_init() {
         return;
 
 
-    add_filter( 'plugin_action_links_woo-invoices/woo-invoices.php', 'plugin_action_links' );
-    function plugin_action_links( $links ) {
+    add_filter( 'plugin_action_links_woo-invoices/woo-invoices.php', 'sliced_invoices_woocommerce_plugin_action_links' );
+    function sliced_invoices_woocommerce_plugin_action_links( $links ) {
 
        $links[] = '<a href="'. esc_url( get_admin_url( null, 'admin.php?page=wc-settings&tab=checkout&section=wc_sliced_invoices' ) ) .'">' . __( 'Settings', 'woo-invoices' ) . '</a>';
        return $links;
